@@ -21,5 +21,3 @@ def uploadImg():
 #logic
 def uploadDicom():
     return 1
-#작업 요청
-def 
