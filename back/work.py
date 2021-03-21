@@ -20,13 +20,13 @@ def showWorkList(user):
     return dic
 
 def readRmark(name):
-    fname = HEL.getRmark(name)
-    f = open(fname,'r')
-    return f.read()
+    return HEL.readFile(name)
 
 def editRmark(name,str):
     fname = HEL.getRmark(name)
-    os.remove(fname)
+    if os.path.exists(fname):
+        os.remove(fname)
+    
     f = open(fname,'w')
     f.write(str)
     f.close()
