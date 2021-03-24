@@ -1,0 +1,29 @@
+<h1><i>Express</i> and <i>Multer</i> File Upload Example</h1>
+<hr>
+
+<h3>1. Single File Upload</h3>
+<form action="/uploadFile" enctype="multipart/form-data" method="post">
+  <input type="file" name="attachment">
+  <button type="submit" class="btn btn-primary">Upload</button>
+</form>
+<hr>
+
+<h3>2. Single File Upload (Keep Original Filename)</h3>
+<form action="/uploadFileWithOriginalFilename" enctype="multipart/form-data" method="post">
+  <input type="file" name="attachment">
+  <button type="submit" class="btn btn-primary">Upload</button>
+</form>
+<hr>
+
+<h3>3. Multiple File Upload</h3>
+<form action="/uploadFiles" enctype="multipart/form-data" method="post">
+  <input type="file" name="attachments" multiple>
+  <button type="submit" class="btn btn-primary">Upload</button>
+</form>
+<hr>
+
+<h3>4. Multiple File Upload (Keep Original Filename)</h3>
+<form action="/uploadFilesWithOriginalFilename" enctype="multipart/form-data" method="post">
+  <input type="file" name="attachments" multiple>
+  <button type="submit" class="btn btn-primary">Upload</button>
+</form>
