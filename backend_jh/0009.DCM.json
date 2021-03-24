@@ -1,0 +1,13 @@
+{
+	"PatientID": "D97258/11053",
+	"PatientName": "Rubo DEMO",
+	"PatientAge": "No data",
+	"PatientBirthDate": "No data",
+	"PatientSex": "M",
+	"StudyData": "No data",
+	"Modality": "XA",
+	"StudyDescription": "No data",
+	"ReferringPhysicianName": "No data",
+	"Number of Img": "137",
+	"Path": "/Users/junhopark/Desktop/express_project/0009.DCM"
+}
