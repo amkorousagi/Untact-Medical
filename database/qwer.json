@@ -1,0 +1,18 @@
+{
+	"StudyDate": "2020-01-10",
+	"ModalityMG" : "검사장비구분",
+	"InstitutionName": "촬영병원명",
+	"StudyDescription": "검사정보",
+	"PatientName": "환자명",
+	"PatientID": "차트번호",
+	"PatientBirthDate": "1999-09-23",
+	"PatientSex": "성별",
+	"ReadingStatus": "판독상태",
+	"DoctorName": "판독의사명",
+	"ReadingResult": "판독결과",
+	
+	"ReadingDate": "2020-03-01",
+	"Request": "요구사항",
+	"DICOMUrl": "경로",
+	"NumOfImg": 1
+}
