@@ -1,7 +1,9 @@
 const mongoose = require("mongoose");
 
+//uniquekey 정의 필요!
+
 const DicomSchema = new mongoose.Schema({
-    PatientID: { type: String, unique: true, required: true },
+    PatientID: { type: String, required: true },
     PatientName: { type: String, required: true },
     PatientAge: { type: String, required: true }, 
     PatientBirthDate: { type: String, required: true },
@@ -13,3 +15,6 @@ const DicomSchema = new mongoose.Schema({
     NumberOfImg: { type: String, required: true },
     Path: {type:String,required:true},
 });
+
+const Dicom = mongoose.model("Dicom",DicomSchema);
+module.exports={Dicom};
