@@ -1,47 +1,14 @@
 fs = require('fs')
 
-function getEmail(id){
-    return id;
-}
-    
-function getPassword(pw){
-    return pw;
-}
-    
-function getImg(img){
-    //get image from DB
-    return img
-}
-    
-function getTxt(txt){
-// get txt from DB
-    return txt
-}
-    
-function getRemark(name){
-//name에 해당하는 소견서 저장 위치 반환
-    return name+".txt"
-}
-    
-function uploadRemark(){
-    return 1
-}
-    
-function uploadTxt(){
-    return 1
-}
-    
-function uploadImg(){
-    return 1
-}
     
 exports.getListFromDB = function (user){
-    dic = {'환자A CT영상' : '73%','환자B X-ray영상' : '13%','환자C CT영상' : '100%'}
-    return dic
+    dirName = user+"_work"
+    return fs.readdirSync(dirName)
 }
 
 exports.fileRead=function(fname){
-    fs.readFile(fname, 'utf8', function(err, data) { console.log(data); });
+    data = fs.readFileSync(fname, 'utf8');
+    return data
 }
 
 exports.writeFile = function(fname,str){
@@ -61,7 +28,34 @@ exports.writeFile = function(fname,str){
         else { console.log('fail'); } })
 }
 
-//logic
+exports.fileDown = function(req, res){
+	var fileId = req.params.fileid 
+	var fname, fpath, fileSize 
+	
+	
+	if( fileId == '1'  ){
+		fname = 'aaa.txt'
+		fpath = 'E:/Desktop/Project2/back/aaa'
+		fileSize = '61684'
+	}else if( fileId == '2'  ){
+		fname = 'UI.png'
+		fpath = 'E:/Desktop/Project2/back/aaa'
+		fileSize = '160931'
+	}
+	
+	
+	var file = fpath + '/' + fname 
+	
+
+	mimetype = mime.lookup( fname ) 
+    
+    res.setHeader('Content-disposition', 'attachment; filename=' + fname ) 
+    res.setHeader('Content-type', mimetype)
+
+    var filestream = fs.createReadStream(file)
+    filestream.pipe(res)
+}
+
 exports.uploadDicom = function (){
     return 1
 }
