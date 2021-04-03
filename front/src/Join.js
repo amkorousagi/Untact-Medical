@@ -1,22 +1,18 @@
-import React, { useState } from "react"
-import styled from "styled-components"
-import oc from "open-color"
-import { shadow } from "./lib/sytleUtils"
+import React from "react"
 import { Link, useHistory } from "react-router-dom"
 import {
-  RecoilRoot,
-  atom,
-  selector,
-  useRecoilState,
-  useRecoilValue,
+  useRecoilState
 } from "recoil"
 
-import { loginState, isDoctorState } from "./state"
-
+import { isDoctorState } from "./state/state"
+import { Input } from "@material-ui/core"
+/*
 const Input = styled.input.attrs((props) => ({
   type: "text",
   size: props.small ? 5 : undefined,
-}))`
+}))
+
+`
   border-radius: 3px;
   border: 1px solid palevioletred;
   display: block;
@@ -34,6 +30,7 @@ const Positioner = styled.div`
 `
 
 // 너비, 그림자 설정
+
 const ShadowedBox = styled.div`
   width: 500px;
   border-radius: 3px;
@@ -50,44 +47,44 @@ const divStyle = {
   display: "flex",
   alignItems: "center",
 }
-
+*/
 const DoctorInput = () => {
   return (
-    <div>
-      <div style={divStyle}>
-        <Input style={{ margin: "5px" }} placeholder='이메일' />
-        <Input small style={{ margin: "5px" }} placeholder='이름' />
+    <>
+      <div>
+        <Input placeholder='이메일' />
+        <Input placeholder='이름' />
       </div>
-      <div style={divStyle}>
-        <Input style={{ margin: "5px" }} placeholder='비밀번호' />
-        <Input style={{ margin: "5px" }} placeholder='소속 병원' />
+      <div>
+        <Input placeholder='비밀번호' />
+        <Input placeholder='소속 병원' />
       </div>
 
-      <div style={divStyle}>
-        <Input style={{ margin: "5px" }} placeholder='비밀번호 번호 확인' />
-        <Input style={{ margin: "5px" }} placeholder='전공' />
+      <div>
+        <Input placeholder='비밀번호 번호 확인' />
+        <Input placeholder='전공' />
       </div>
-    </div>
+    </>
   )
 }
 
 const PlzInput = () => {
   return (
-    <div>
-      <div style={divStyle}>
-        <Input style={{ margin: "5px" }} placeholder='이메일' />
-        <Input small style={{ margin: "5px" }} placeholder='이름' />
+    <>
+      <div>
+        <Input  placeholder='이메일' />
+        <Input placeholder='이름' />
       </div>
-      <div style={divStyle}>
-        <Input style={{ margin: "5px" }} placeholder='비밀번호' />
-        <Input style={{ margin: "5px" }} placeholder='전화번호' />
+      <div>
+        <Input placeholder='비밀번호' />
+        <Input placeholder='전화번호' />
       </div>
 
-      <div style={divStyle}>
-        <Input style={{ margin: "5px" }} placeholder='비밀번호 번호 확인' />
-        <Input style={{ margin: "5px" }} placeholder='계좌번호' />
+      <div>
+        <Input placeholder='비밀번호 번호 확인' />
+        <Input placeholder='계좌번호' />
       </div>
-    </div>
+    </>
   )
 }
 
@@ -101,37 +98,31 @@ function Join(props) {
   return (
     <div>
       <h1>Untact Medical!</h1>
-      <Positioner style={{ borderRadius: "5px" }}>
-        <ShadowedBox>
-          <Contents>
-            {isDoctor ? <DoctorInput /> : <PlzInput />}
-            <button
-              style={{
-                backgroundColor: "white",
-                borderColor: "palevioletred",
-                color: "palevioletred",
-                margin: "5px",
-                borderRadius: "3px",
-              }}
-              onClick={(e) => {
-                setIsDoctor(!isDoctor)
-              }}>
-              {isDoctor ? "의뢰자용 계정" : "의사용 계정"}
-            </button>
-            <button
-              style={{
-                backgroundColor: "white",
-                borderColor: "palevioletred",
-                color: "palevioletred",
-                margin: "5px",
-                borderRadius: "3px",
-              }}
-              onClick={routeChange}>
-              회원가입
-            </button>
-          </Contents>
-        </ShadowedBox>
-      </Positioner>
+      {isDoctor ? <DoctorInput /> : <PlzInput />}
+      <button
+        style={{
+          backgroundColor: "white",
+          borderColor: "palevioletred",
+          color: "palevioletred",
+          margin: "5px",
+          borderRadius: "3px",
+        }}
+        onClick={(e) => {
+          setIsDoctor(!isDoctor)
+        }}>
+        {isDoctor ? "의뢰자용 계정" : "의사용 계정"}
+      </button>
+      <button
+        style={{
+          backgroundColor: "white",
+          borderColor: "palevioletred",
+          color: "palevioletred",
+          margin: "5px",
+          borderRadius: "3px",
+        }}
+        onClick={routeChange}>
+        회원가입
+      </button>
     </div>
   )
 }

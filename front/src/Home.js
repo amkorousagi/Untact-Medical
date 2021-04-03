@@ -1,9 +1,9 @@
-import logo from "./cloud.png"
-import "./Home.css"
+import logo from "./resource/cloud.png"
+import "./style/Home.css"
 import React, { useState } from "react"
 import styled from "styled-components"
 import oc from "open-color"
-import { shadow } from "./lib/sytleUtils"
+//import { shadow } from "./lib/sytleUtils"
 import { Link, useHistory } from "react-router-dom"
 import {
   RecoilRoot,
@@ -13,7 +13,7 @@ import {
   useRecoilValue,
 } from "recoil"
 
-import { loginState } from "./state"
+import { loginState } from "./state/state"
 
 
 

@@ -1,3 +1,4 @@
+/*
 import logo from "./cloud.png"
 import "./App.css"
 
@@ -23,7 +24,10 @@ import {
   useRecoilValue,
 } from "recoil"
 
-import { loginState, isDoctorState, isDashState } from "./state"
+import { loginState, isDoctorState, isDashState } from "./state/state"
+
+
+import Check from "./Check"
 let history
 const Content = (props) => {
   return (
@@ -32,6 +36,7 @@ const Content = (props) => {
       <Route path='/join' component={Join}></Route>
       <Route path='/login' component={Login}></Route>
       <Route path='/dash' exact component={Dash}></Route>
+      <Route path="/check" exact component= {Check}></Route>
     </div>
   )
 }
