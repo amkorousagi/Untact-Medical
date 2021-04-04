@@ -10,6 +10,7 @@ import {
   FormControlLabel,
   FormLabel,
   Button,
+  Typography,
 } from "@material-ui/core"
 import { Container, Row, Col } from "react-bootstrap"
 
@@ -70,6 +71,9 @@ const Readout = () => {
           </Button>
         </Col>
       </Row>
+      <Row>
+        <Col>이미지 : {index + 1}/2</Col>
+      </Row>
       <hr></hr>
       <Row xl={12} lg={12} md={12} sm={12} xs={12}>
         <Col xl={6} lg={6} md={6} sm={6} xs={6}>
@@ -111,22 +115,60 @@ const Readout = () => {
           </FormControl>
         </Col>
         <Col>
-          <TextField placeholder='짧은 소견' required />
+          <TextField placeholder='긴 소견' variant='outlined' multiline />
         </Col>
       </Row>
       <Row>
         <Col>
-          <TextField placeholder='긴 소견' variant='outlined' multiline />
+          <TextField placeholder='짧은 소견' required />
         </Col>
         <Col>
           <Button
             variant='outlined'
             onClick={() => {
               alert("제출합니다")
-              
             }}>
             <strong>판독 제출(완료)</strong>
           </Button>
+        </Col>
+      </Row>
+      <hr></hr>
+      <Row>
+        <Col>
+          <FormLabel component='legend'>환자 정보</FormLabel>
+        </Col>
+      </Row>
+      <Row>
+        <Col>
+          <Typography paragraph>이름 : 홍길동</Typography>
+        </Col>
+        <Col>
+          <Typography paragraph>성별 : 남자</Typography>
+        </Col>
+        <Col>
+          <Typography paragraph>나이 : (만)23세</Typography>
+        </Col>
+      </Row>
+      <Row>
+        <Col>
+          <Typography paragraph>촬영병원명 : 파티마</Typography>
+        </Col>
+        <Col>
+          <Typography paragraph>촬영일자 : 2020-3-4</Typography>
+        </Col>
+        <Col>
+          <Typography paragraph>검사장비 : CT</Typography>
+        </Col>
+      </Row>
+      <hr></hr>
+      <Row>
+        <Col>
+          <FormLabel component='legend'>촬영 상세</FormLabel>
+          <Typography paragraph>하위</Typography>
+        </Col>
+        <Col>
+          <FormLabel component='legend'>요청 사항</FormLabel>
+          <Typography paragraph>없음</Typography>
         </Col>
       </Row>
     </Container>

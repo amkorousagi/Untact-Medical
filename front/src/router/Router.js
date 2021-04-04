@@ -6,7 +6,7 @@ import Reader from "../Reader"
 import Readout from "../Readout"
 import Requester from "../Requester"
 import Result from "../Result"
-
+import Request from "../Request"
 
 const Router = () => {
   return (
@@ -18,6 +18,7 @@ const Router = () => {
       <Route path="/reader/readout" component={Readout} />
       <Route path="/requester" component={Requester} exact />
       <Route path="/requester/result" component={Result} /> 
+      <Route path="/requester/request" component={Request} />
     </>
   )
 }
