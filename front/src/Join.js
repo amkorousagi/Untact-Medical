@@ -6,6 +6,7 @@ import {
 
 import { isDoctorState } from "./state/state"
 import { Input } from "@material-ui/core"
+const axios = require("axios")
 /*
 const Input = styled.input.attrs((props) => ({
   type: "text",
@@ -77,12 +78,12 @@ const PlzInput = () => {
       </div>
       <div>
         <Input placeholder='비밀번호' />
-        <Input placeholder='전화번호' />
+        <Input placeholder='소속 병원' />
       </div>
 
       <div>
         <Input placeholder='비밀번호 번호 확인' />
-        <Input placeholder='계좌번호' />
+        <Input placeholder='전공' />
       </div>
     </>
   )
@@ -91,9 +92,17 @@ const PlzInput = () => {
 function Join(props) {
   const [isDoctor, setIsDoctor] = useRecoilState(isDoctorState)
   let history = useHistory()
-  const routeChange = (e) => {
-    alert("회원가입 됨")
-    history.push("/login")
+  const routeChange = async (e) => {
+    const result = await axios.post("http://localhost:3001/signup",{
+      Email:"",
+      Password:"",
+      DoctorName:"",
+      Role:"",
+      AffiliatedHospital:"",
+    })
+    console.log(result)
+    //alert("회원가입 됨")
+    //history.push("/login")
   }
   return (
     <div>

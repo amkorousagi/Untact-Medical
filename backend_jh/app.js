@@ -1,7 +1,9 @@
 
 const port = 3000,
-express = require('express'),
+express = require('express')
+const cors = require("cors")
 app = express();
+app.use(cors);
 indexRoute = require("./routes/index");
 
 //const mongoose = require('mongoose');
@@ -22,6 +24,6 @@ app.use(express.static(__dirname + "/public"));
 app.use("/",indexRoute);
 
 
-app.listen(port,()=> {
-    console.log('Example app listening on port',port);
+app.listen(process.env.port||3001 ,()=> {
+    console.log('Example app listening on port',process.env.port||3001);
 });
