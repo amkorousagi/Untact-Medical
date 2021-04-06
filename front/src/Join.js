@@ -1,4 +1,4 @@
-import React from "react"
+import React, {useState} from "react"
 import { Link, useHistory } from "react-router-dom"
 import {
   useRecoilState
@@ -49,11 +49,11 @@ const divStyle = {
   alignItems: "center",
 }
 */
-const DoctorInput = () => {
+const DoctorInput = ({onChange}) => {
   return (
     <>
       <div>
-        <Input placeholder='이메일' />
+        <Input placeholder='이메일' onChange={(e)=>onChange(e,"이메일")}/>
         <Input placeholder='이름' />
       </div>
       <div>
@@ -69,11 +69,11 @@ const DoctorInput = () => {
   )
 }
 
-const PlzInput = () => {
+const RequesterInput = ({onChange}) => {
   return (
     <>
       <div>
-        <Input  placeholder='이메일' />
+        <Input  placeholder='이메일' onChange={(e)=>onChange(e,"이메일")}/>
         <Input placeholder='이름' />
       </div>
       <div>
@@ -82,7 +82,7 @@ const PlzInput = () => {
       </div>
 
       <div>
-        <Input placeholder='비밀번호 번호 확인' />
+        <Input placeholder='비밀번호 확인' />
         <Input placeholder='전공' />
       </div>
     </>
@@ -92,6 +92,7 @@ const PlzInput = () => {
 function Join(props) {
   const [isDoctor, setIsDoctor] = useRecoilState(isDoctorState)
   let history = useHistory()
+  const [name, setName] = useState("")
   const routeChange = async (e) => {
     const result = await axios.post("http://localhost:3001/signup",{
       Email:"",
@@ -104,10 +105,28 @@ function Join(props) {
     //alert("회원가입 됨")
     //history.push("/login")
   }
+  const onChange = (e, label) => {
+    console.log(e.target.value)
+    if(label=="이름"){
+
+    }else if(label="이메일"){
+
+    }else if(label="비밀번호"){
+
+    }else if(label="비밀번호 확인"){
+
+    }else if(label="전공"){
+
+    }else if(label="소속 병원"){
+
+    }else{
+      console.log("wrong label")
+    }
+  }
   return (
     <div>
       <h1>Untact Medical!</h1>
-      {isDoctor ? <DoctorInput /> : <PlzInput />}
+      {isDoctor ? <DoctorInput onChange={onChange}/> : <RequesterInput onChange={onChange}/>}
       <button
         style={{
           backgroundColor: "white",
