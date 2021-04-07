@@ -60,3 +60,9 @@ exports.uploadDicom = function (){
     return 1
 }
 
+
+exports.uploadDicom = function (){
+    return 1
+}
+
+exports.uploa
