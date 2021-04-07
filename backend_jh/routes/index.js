@@ -167,17 +167,17 @@ router.post("/signup", async (req, res, next) => {
     req.body.AffiliatedHospital == "" ||
     req.body.AffiliatedHospital == undefined
   ) {
-    res.status(400).json({ success: false, err: "required is empty" })
+    return res.status(400).json({ success: false, err: "required is empty" })
   }
   const result = await User.find({ Email: req.body.Email })
   if (result != []) {
-    res.status(400).json({ success: false, err: "duplicated email" })
+    return res.status(400).json({ success: false, err: "duplicated email" })
   }
 
   const user = new User(req.body)
   try {
     await user.save()
-    res.status(200).json({ success: true })
+    return res.status(200).json({ success: true })
   } catch (err) {
     console.log(err)
     return res.json({ success: false, err })

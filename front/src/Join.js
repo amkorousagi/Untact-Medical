@@ -142,7 +142,8 @@ function Join(props) {
       )
     } catch (error) {
       console.log(error);
-      alert("실패 :" + result.data.err)
+      alert("실패 :" + error.response.data.err)
+      return
     }
     console.log(result)
     if (result.data.success) {
