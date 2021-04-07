@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useEffect, useState } from "react"
 import CanvasDraw from "react-canvas-draw"
 import lung from "./resource/lung.jpg"
 import kakao from "./resource/kakaotalk.png"
@@ -13,16 +13,18 @@ import {
   Typography,
 } from "@material-ui/core"
 import { Container, Row, Col } from "react-bootstrap"
+const axios = require("axios")
 
 const Readout = () => {
-  const [value, setValue] = React.useState("normal")
-  const [images, setImages] = React.useState([lung, kakao])
-  const [index, setIndex] = React.useState(0)
+  const [value, setValue] = useState("normal")
+  const [images, setImages] = useState([lung, kakao])
+  const [index, setIndex] = useState(0)
   let saveableCanvas
   const handleChange = (event) => {
     setValue(event.target.value)
   }
   const handleNext = () => {
+    console.log(images);
     if (index + 1 < images.length) setIndex(index + 1)
     saveableCanvas.clear()
   }
@@ -30,7 +32,13 @@ const Readout = () => {
     if (index - 1 >= 0) setIndex(index - 1)
     saveableCanvas.clear()
   }
+  useEffect(()=>{
+    //모든 이미지 url을 불러오는 fetch
+    setImages(images.concat("http://localhost:8000/download/2"))
+  },[])
+  
   return (
+   
     <Container>
       <Row>
         <Col>
@@ -72,7 +80,7 @@ const Readout = () => {
         </Col>
       </Row>
       <Row>
-        <Col>이미지 : {index + 1}/2</Col>
+        <Col>이미지 : {index + 1}/{images.length}</Col>
       </Row>
       <hr></hr>
       <Row xl={12} lg={12} md={12} sm={12} xs={12}>

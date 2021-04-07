@@ -3,6 +3,8 @@ var fs = require('fs')
 var mime = require('mime')
 var router   = express.Router()
 var app = express()
+const cors = require("cors");
+app.use(cors())
 
 
 app.get('/', function(req, res){
@@ -24,11 +26,11 @@ app.get('/download/:fileid', function(req, res){
 	
 	if( fileId == '1'  ){
 		fname = 'aaa.txt'
-		fpath = 'E:/Desktop/Project2/back/aaa'
+		fpath = './aaa'
 		fileSize = '61684'
 	}else if( fileId == '2'  ){
 		fname = 'UI.png'
-		fpath = 'E:/Desktop/Project2/back/aaa'
+		fpath = './aaa'
 		fileSize = '160931'
 	}
 	
