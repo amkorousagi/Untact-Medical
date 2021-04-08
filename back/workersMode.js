@@ -8,7 +8,7 @@ exports.getProccess = function(user,works){
 }
 
 exports.showWorkList = function(user){
-    dic = HEL.getListFromDB(user)
+    dic = HEL.getList(user)
     return dic
 }
 
@@ -23,8 +23,8 @@ exports.readRemark= function(user,works,num){
 }
     
 
-exports.editRmark= function(user,str,num){
-    fname = user+'_work/' + works +'/_remark/'+num+'_remark.txt'
+exports.editRmark= function(user,works,str,num){
+    fname = './DATA'+user+'_work/' + works +'/_remark/'+num+'_remark.txt'
     HEL.writeFile(fname,str)
 }
 

@@ -1,8 +1,8 @@
 fs = require('fs')
 
     
-exports.getListFromDB = function (user){
-    dirName = user+"_work"
+exports.getList = function (user){
+    dirName = './DATA/'+user+"_work"
     return fs.readdirSync(dirName)
 }
 

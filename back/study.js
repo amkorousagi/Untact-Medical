@@ -4,15 +4,24 @@ var mime = require('mime')
 var router   = express.Router()
 var app = express()
 const cors = require("cors");
+const workers=require('./workersMode')
 app.use(cors())
 
 
 app.get('/', function(req, res){
-	fs.readFile('./fileList.html', function(error, data){ 
+	fs.readFile('./test.html', function(error, data){ 
 		res.writeHead(200, {'Content-Type':'text/html'})
 		res.end(data)
 	})
 })
+
+// user(판독하는 사람)가 판독해야하는 작업 list
+app.get('/list', function(req,res){
+	user = 'hgl'//req.params.user
+	res.send(workers.showWorkList(user))
+	
+})
+
 
 app.get('/download', function(req, res){///:fileid
 	const fileId = req.params.fileid 
@@ -64,7 +73,7 @@ app.get('/download', function(req, res){///:fileid
 	// }
 	
 	
-	var file = fpath + '/' + fname 
+	const file = fpath + '/' + fname 
 	
 
 	mimetype = mime.lookup( fname ) 
@@ -72,7 +81,7 @@ app.get('/download', function(req, res){///:fileid
     res.setHeader('Content-disposition', 'attachment; filename=' + fname ) 
     res.setHeader('Content-type', mimetype)
 
-    var filestream = fs.createReadStream(file)
+    const filestream = fs.createReadStream(file)
     filestream.pipe(res)
 })
 
