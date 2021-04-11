@@ -31,16 +31,16 @@ app.get('/download', function(req, res){///:fileid
 	const testFname = req.params.num+'_'+req.params.kind
 	const testFpath = './DATA/'+ req.params.user + '_work/'+req.params.folder+'/_'+req.params.kind
 	var ext
-	if(tkind=='origin' || tkind == 'worked' ){//req.params.kind=='origin' || req.params.kind == 'worked' 
+	if(req.params.kind=='origin' || req.params.kind == 'worked'){//tkind=='origin' || tkind == 'worked' 
 		ext = '.png'
 	}
 	else{
 		ext = '.txt'
 	}
-	//fname=testFname
-	//fpath=testFpath+ext
-	fname = tnum+'_'+tkind+ext
-	fpath = './DATA/'+ tuser + '_work/'+folder+'/_'+tkind
+	fname=testFname
+	fpath=testFpath+ext
+	//fname = tnum+'_'+tkind+ext
+	//fpath = './DATA/'+ tuser + '_work/'+folder+'/_'+tkind
 	fileSize = '160931'
 
 
