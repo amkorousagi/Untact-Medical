@@ -16,13 +16,16 @@ app.get('/', function(req, res){
 })
 
 // user(판독하는 사람)가 판독해야하는 작업 list
+// psc:작업 사진을 주는 것이 아니라, 모든 검사 list 를 DB에서 받아와야한다.
+// psc:애초에 orign이랑 remark만 있으면 되지 왜 worked가 있는 건지 난 잘 모르겠다 worked 같은건 DB 쪽에서 봐야하지 않나
 app.get('/list', function(req,res){
 	user = 'hgl'//req.params.user
 	res.send(workers.showWorkList(user))
 	
 })
 
-
+// kind는 머지? 애초에 왜 worked 아래에 remarked 있다느 식으로 적어놓은 거지?, 실제로는 유저? 디렉토리 및에origran remark worked 같은 디렉토리 상에 있는데
+// folder는 머 study 번호 인건가 사진 번호인건가? 무슨의미인지 올바른 변수이름이었으면 좋겠다
 app.get('/download', function(req, res){///:fileid
 	const fileId = req.params.fileid 
 	var fname, fpath, fileSize
