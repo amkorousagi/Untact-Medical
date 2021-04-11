@@ -5,6 +5,7 @@ const { Dicom } = require("../models/Dicom")
 mongoose = require("mongoose")
 const multer = require("multer")
 ejs = require("ejs")
+var mime = require('mime')
 const fs = require("fs")
 
 router.get("/", (req, res) => {
@@ -19,7 +20,7 @@ router.get("/login_success", (req, res) =>
 router.get("/dicom_index", (req, res) =>
   res.render("dicom_index", { page: "dicom_index" })
 )
-router.get("/download", (req, res) => res.render("download", {page: "download"}));
+//router.get("/download", (req, res) => res.render("download", {page: "download"}));
 
 //mongoose.connect("mongodb+srv://junhopark-admin:admin@cluster0.glonm.mongodb.net/myFirstDatabase?retryWrites=true&w=majority")
 function connectDB() {
@@ -220,7 +221,7 @@ router.get('/download', (req, res)=>{///:fileid
 	const tuser='hgl',tnum='1',tkind='remark',folder='156871'//예시 t 대신 req.params. 으로 대입하면 됨
 
 	const testFname = req.params.num+'_'+req.params.kind
-	const testFpath = '../DATA/'+ req.params.user + '_work/'+req.params.folder+'/_'+req.params.kind
+	const testFpath = './DATA/'+ req.params.user + '_work/'+req.params.folder+'/_'+req.params.kind
 	var ext
 	if(tkind=='origin' || tkind == 'worked' ){//req.params.kind=='origin' || req.params.kind == 'worked' 
 		ext = '.png'
@@ -231,7 +232,7 @@ router.get('/download', (req, res)=>{///:fileid
 	//fname=testFname
 	//fpath=testFpath+ext
 	fname = tnum+'_'+tkind+ext
-	fpath = '../DATA/'+ tuser + '_work/'+folder+'/_'+tkind
+	fpath = './DATA/'+ tuser + '_work/'+folder+'/_'+tkind
 	fileSize = '160931'
 
 	
