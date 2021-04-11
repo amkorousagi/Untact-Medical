@@ -8,6 +8,8 @@ ejs = require("ejs")
 var mime = require('mime')
 const fs = require("fs")
 
+const showList=require('../showList')
+
 router.get("/", (req, res) => {
   console.log("start")
   res.render("start")
@@ -218,7 +220,7 @@ router.get("/getdata", (req, res) => {
 router.get('/download', (req, res)=>{///:fileid
 	const fileId = req.query.fileid 
 	var fname, fpath, fileSize
-	const tuser='hgl',tnum='1',tkind='remark',folder='156871'//예시 t 대신 req.query. 으로 대입하면 됨
+	//const tuser='hgl',tnum='1',tkind='remark',folder='156871'//예시 t 대신 req.query. 으로 대입하면 됨
 
 	const testFname = req.query.num+'_'+req.query.kind
 	const testFpath = './DATA/'+ req.query.user + '_work/'+req.query.folder+'/_'+req.query.kind
@@ -246,6 +248,12 @@ router.get('/download', (req, res)=>{///:fileid
 
     const filestream = fs.createReadStream(file)
     filestream.pipe(res)
+})
+
+router.get('/list', function(req,res){
+	user = 'hgl'//req.query.user
+	res.send(showList.get(user))
+	
 })
 
 module.exports = router
