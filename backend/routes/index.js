@@ -20,7 +20,7 @@ router.get("/login_success", (req, res) =>
 router.get("/dicom_index", (req, res) =>
   res.render("dicom_index", { page: "dicom_index" })
 )
-//router.get("/download", (req, res) => res.render("download", {page: "download"}));
+router.get("/download_page", (req, res) => res.render("download_page", {page: "download_page"}));
 
 //mongoose.connect("mongodb+srv://junhopark-admin:admin@cluster0.glonm.mongodb.net/myFirstDatabase?retryWrites=true&w=majority")
 function connectDB() {
@@ -216,23 +216,23 @@ router.get("/getdata", (req, res) => {
 
 
 router.get('/download', (req, res)=>{///:fileid
-	const fileId = req.params.fileid 
+	const fileId = req.query.fileid 
 	var fname, fpath, fileSize
-	const tuser='hgl',tnum='1',tkind='remark',folder='156871'//예시 t 대신 req.params. 으로 대입하면 됨
+	const tuser='hgl',tnum='1',tkind='remark',folder='156871'//예시 t 대신 req.query. 으로 대입하면 됨
 
-	const testFname = req.params.num+'_'+req.params.kind
-	const testFpath = './DATA/'+ req.params.user + '_work/'+req.params.folder+'/_'+req.params.kind
+	const testFname = req.query.num+'_'+req.query.kind
+	const testFpath = './DATA/'+ req.query.user + '_work/'+req.query.folder+'/_'+req.query.kind
 	var ext
-	if(tkind=='origin' || tkind == 'worked' ){//req.params.kind=='origin' || req.params.kind == 'worked' 
+	if(req.query.kind=='origin' || req.query.kind == 'worked'  ){//tkind=='origin' || tkind == 'worked'
 		ext = '.png'
 	}
 	else{
 		ext = '.txt'
 	}
-	//fname=testFname
-	//fpath=testFpath+ext
-	fname = tnum+'_'+tkind+ext
-	fpath = './DATA/'+ tuser + '_work/'+folder+'/_'+tkind
+	fname=testFname+ext
+	fpath=testFpath
+	//fname = tnum+'_'+tkind+ext
+	//fpath = './DATA/'+ req.query.user + '_work/'+folder+'/_'+tkind
 	fileSize = '160931'
 
 	
