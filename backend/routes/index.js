@@ -219,7 +219,7 @@ router.get('/download', function(req, res){///:fileid
 	const tuser='hgl',tnum='1',tkind='remark',folder='156871'//예시 t 대신 req.params. 으로 대입하면 됨
 
 	const testFname = req.params.num+'_'+req.params.kind
-	const testFpath = './DATA/'+ req.params.user + '_work/'+req.params.folder+'/_'+req.params.kind
+	const testFpath = '../DATA/'+ req.params.user + '_work/'+req.params.folder+'/_'+req.params.kind
 	var ext
 	if(tkind=='origin' || tkind == 'worked' ){//req.params.kind=='origin' || req.params.kind == 'worked' 
 		ext = '.png'
@@ -230,7 +230,7 @@ router.get('/download', function(req, res){///:fileid
 	//fname=testFname
 	//fpath=testFpath+ext
 	fname = tnum+'_'+tkind+ext
-	fpath = './DATA/'+ tuser + '_work/'+folder+'/_'+tkind
+	fpath = '../DATA/'+ tuser + '_work/'+folder+'/_'+tkind
 	fileSize = '160931'
 
 	
