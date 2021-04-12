@@ -1,14 +1,12 @@
 express = require("express")
 router = express.Router()
 const { User } = require("../models/user")
-const { Dicom } = require("../models/Dicom")
+const { Study } = require("../models/Study")
 mongoose = require("mongoose")
 const multer = require("multer")
 ejs = require("ejs")
 var mime = require('mime')
 const fs = require("fs")
-
-const showList=require('../showList')
 
 router.get("/", (req, res) => {
   console.log("start")
@@ -22,7 +20,6 @@ router.get("/login_success", (req, res) =>
 router.get("/dicom_index", (req, res) =>
   res.render("dicom_index", { page: "dicom_index" })
 )
-router.get("/download_page", (req, res) => res.render("download_page", {page: "download_page"}));
 
 //mongoose.connect("mongodb+srv://junhopark-admin:admin@cluster0.glonm.mongodb.net/myFirstDatabase?retryWrites=true&w=majority")
 function connectDB() {
@@ -44,10 +41,10 @@ var storage = multer.diskStorage({
   destination(req, file, cb) {
     cb(null, "images/")
   },
-  //하단 주석처리시 images/폴더안에 난수로 파일 저장
-  filename(req, file, cb) {
-    cb(null, file.originalname)
-  },
+  //하단 주석처리시 images/폴더안에 난수로 파일 저장->난수는 DB에 저장
+  //filename(req, file, cb) {
+  //  cb(null, file.originalname)
+  //},
 })
 
 var uploadWithOriginalFilename = multer({ storage: storage }) // 3-2
@@ -79,14 +76,14 @@ router.post(
       //const fs = require('fs');
       var dicomdata = fs.readFileSync(json_path) //json연결
       let a = JSON.parse(dicomdata) //객체로 파싱
-      var dicom = new Dicom() //모델 인스턴스 생성
-      Object.assign(dicom, a) //모델 인스턴스에 파싱된Json 할당
+      var study = new Study() //모델 인스턴스 생성
+      Object.assign(study, a) //모델 인스턴스에 파싱된Json 할당
 
-      dicom.save(function (err) {
+      study.save(function (err) {
         //DB에 저장
         if (err) console.log(err)
       })
-      console.log(dicom.RequestDate)
+      console.log(study.RequestDate)
     })
   }
 )
@@ -218,23 +215,23 @@ router.get("/getdata", (req, res) => {
 
 
 router.get('/download', (req, res)=>{///:fileid
-	const fileId = req.query.fileid 
+	const fileId = req.params.fileid 
 	var fname, fpath, fileSize
-	//const tuser='hgl',tnum='1',tkind='remark',folder='156871'//예시 t 대신 req.query. 으로 대입하면 됨
+	const tuser='hgl',tnum='1',tkind='remark',folder='156871'//예시 t 대신 req.params. 으로 대입하면 됨
 
-	const testFname = req.query.num+'_'+req.query.kind
-	const testFpath = './DATA/'+ req.query.user + '_work/'+req.query.folder+'/_'+req.query.kind
+	const testFname = req.params.num+'_'+req.params.kind
+	const testFpath = './DATA/'+ req.params.user + '_work/'+req.params.folder+'/_'+req.params.kind
 	var ext
-	if(req.query.kind=='origin' || req.query.kind == 'worked'  ){//tkind=='origin' || tkind == 'worked'
+	if(tkind=='origin' || tkind == 'worked' ){//req.params.kind=='origin' || req.params.kind == 'worked' 
 		ext = '.png'
 	}
 	else{
 		ext = '.txt'
 	}
-	fname=testFname+ext
-	fpath=testFpath
-	//fname = tnum+'_'+tkind+ext
-	//fpath = './DATA/'+ req.query.user + '_work/'+folder+'/_'+tkind
+	//fname=testFname
+	//fpath=testFpath+ext
+	fname = tnum+'_'+tkind+ext
+	fpath = './DATA/'+ tuser + '_work/'+folder+'/_'+tkind
 	fileSize = '160931'
 
 	
@@ -248,12 +245,6 @@ router.get('/download', (req, res)=>{///:fileid
 
     const filestream = fs.createReadStream(file)
     filestream.pipe(res)
-})
-
-router.get('/list', function(req,res){
-	user = 'hgl'//req.query.user
-	res.send(showList.get(user))
-	
 })
 
 module.exports = router
