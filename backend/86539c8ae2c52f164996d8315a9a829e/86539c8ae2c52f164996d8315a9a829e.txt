@@ -1,0 +1,11 @@
+PatientID                     D97258/11053
+PatientName                   Rubo DEMO
+PatientAge                    No data
+PatientBirthDate              No data
+PatientSex                    M
+StudyData                     No data
+Modality                      XA
+StudyDescription              No data
+ReferringPhysicianName        No data
+NumberOfImg                   137
+URL                           E:\Desktop\Project2\backend/86539c8ae2c52f164996d8315a9a829e
