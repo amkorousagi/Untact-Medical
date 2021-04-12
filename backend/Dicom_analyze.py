@@ -19,7 +19,10 @@ def Write_data_json(ds,name,shape,path):
             file_data[element_list[i][0]]="No data"
 
     file_data['NumberOfImg']=str(1 if len(shape) == 2 else shape[0])
-    file_data['Path']=os.path.dirname(os.path.realpath(__file__))+path[1:]
+    file_data['URL']=os.path.dirname(os.path.realpath(__file__))+path[1:]
+
+    #
+    file_data['StudyID']=name
 
     file_name=path+'/'+ name+'.json'
     with open(file_name,'w',encoding="utf-8") as make_file:
@@ -47,7 +50,7 @@ def Write_data_txt(ds,name,shape,path):
     data = '%-30s' % 'NumberOfImg' + str(1 if len(shape) == 2 else shape[0]) +'\n'
     #print(data)
     f.write(data)
-    data = '%-30s' % 'Path' + os.path.dirname(os.path.realpath(__file__))+path[1:]
+    data = '%-30s' % 'URL' + os.path.dirname(os.path.realpath(__file__))+path[1:]
     #print(data)
     f.write(data)
     f.close()
