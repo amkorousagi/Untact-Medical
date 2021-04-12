@@ -1,7 +1,7 @@
 express = require("express")
 router = express.Router()
 const { User } = require("../models/user")
-const { Dicom } = require("../models/Dicom")
+const { Study } = require("../models/Study")
 mongoose = require("mongoose")
 const multer = require("multer")
 ejs = require("ejs")
@@ -20,7 +20,6 @@ router.get("/login_success", (req, res) =>
 router.get("/dicom_index", (req, res) =>
   res.render("dicom_index", { page: "dicom_index" })
 )
-//router.get("/download", (req, res) => res.render("download", {page: "download"}));
 
 //mongoose.connect("mongodb+srv://junhopark-admin:admin@cluster0.glonm.mongodb.net/myFirstDatabase?retryWrites=true&w=majority")
 function connectDB() {
@@ -43,9 +42,9 @@ var storage = multer.diskStorage({
     cb(null, "images/")
   },
   //하단 주석처리시 images/폴더안에 난수로 파일 저장
-  filename(req, file, cb) {
-    cb(null, file.originalname)
-  },
+  //filename(req, file, cb) {
+  //  cb(null, file.originalname)
+  //},
 })
 
 var uploadWithOriginalFilename = multer({ storage: storage }) // 3-2
@@ -77,14 +76,14 @@ router.post(
       //const fs = require('fs');
       var dicomdata = fs.readFileSync(json_path) //json연결
       let a = JSON.parse(dicomdata) //객체로 파싱
-      var dicom = new Dicom() //모델 인스턴스 생성
-      Object.assign(dicom, a) //모델 인스턴스에 파싱된Json 할당
+      var study = new Study() //모델 인스턴스 생성
+      Object.assign(study, a) //모델 인스턴스에 파싱된Json 할당
 
-      dicom.save(function (err) {
+      study.save(function (err) {
         //DB에 저장
         if (err) console.log(err)
       })
-      console.log(dicom.RequestDate)
+      console.log(study.RequestDate)
     })
   }
 )

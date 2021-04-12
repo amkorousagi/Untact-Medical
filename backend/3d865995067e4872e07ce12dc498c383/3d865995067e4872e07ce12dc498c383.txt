@@ -1,0 +1,11 @@
+PatientID                     D97258/11053
+PatientName                   Rubo DEMO
+PatientAge                    No data
+PatientBirthDate              No data
+PatientSex                    M
+StudyData                     No data
+Modality                      XA
+StudyDescription              No data
+ReferringPhysicianName        No data
+NumberOfImg                   137
+URL                           /Users/junhopark/Desktop/Untact-Medical/backend/3d865995067e4872e07ce12dc498c383

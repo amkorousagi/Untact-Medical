@@ -1,0 +1,11 @@
+PatientID                     556342B
+PatientName                   Rubo DEMO
+PatientAge                    No data
+PatientBirthDate              19951025
+PatientSex                    M
+StudyData                     No data
+Modality                      XA
+StudyDescription              No data
+ReferringPhysicianName        No data
+NumberOfImg                   96
+URL                           /Users/junhopark/Desktop/Untact-Medical/backend/fc829983017f64568e567054bc0e89fb
