@@ -41,7 +41,7 @@ var storage = multer.diskStorage({
   destination(req, file, cb) {
     cb(null, "images/")
   },
-  //하단 주석처리시 images/폴더안에 난수로 파일 저장
+  //하단 주석처리시 images/폴더안에 난수로 파일 저장->난수는 DB에 저장
   //filename(req, file, cb) {
   //  cb(null, file.originalname)
   //},
