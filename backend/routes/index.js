@@ -212,39 +212,71 @@ router.get("/getdata", (req, res) => {
       res.end()
     })
 })
+var getIMGfromStudyID = function (db, StudyID, callback) {
+  //console.log("StudyID :" +StudyID.toString())
+  var studyid = database.collection("studies")
+  
+  //console.log('stu : ',StudyID)
+  var result = studyid.find({ StudyID: StudyID })
+  
+  result.toArray(function (err, docs) {
+    if (err) {
+      callback(err, null)
+      return
+    }
+    console.log('docs',docs)
+    if (docs.length > 0) {
+      console.log("find StudyID [ " + docs + " ]")
+      for(i=1;i<=docs[0].NumberOfImg;i++){
+          callback(null, docs[0].URL+""+i+"png")
+      }
+      console.log("end")
+    } else {
+      console.log("can not find StudyID [ " + docs + " ]")
+      callback(null, null)
+    }
+  })
+}
+router.get("/list", (req, res, next) => {
+  console.log(req.body)
+  temp="86539c8ae2c52f164996d8315a9a829e"
+  getIMGfromStudyID(database, temp, function (err, docs) {//req.body.StudyID
+    if (database) {
+      if (err) {
+        console.log("Error!", err)
+        return
+      }
+      if (docs) {
+        console.log("docs",docs)
+      } else {
+        console.log("empty error")
+      }
+    } else {
+      console.log("DB 연결 x")
+    }
+  })
+})
 
-
-router.get('/download', (req, res)=>{///:fileid
+router.get('/showIMG', (req, res)=>{///:fileid
 	const fileId = req.params.fileid 
 	var fname, fpath, fileSize
-	const tuser='hgl',tnum='1',tkind='remark',folder='156871'//예시 t 대신 req.params. 으로 대입하면 됨
 
-	const testFname = req.params.num+'_'+req.params.kind
-	const testFpath = './DATA/'+ req.params.user + '_work/'+req.params.folder+'/_'+req.params.kind
-	var ext
-	if(tkind=='origin' || tkind == 'worked' ){//req.params.kind=='origin' || req.params.kind == 'worked' 
-		ext = '.png'
-	}
-	else{
-		ext = '.txt'
-	}
-	//fname=testFname
-	//fpath=testFpath+ext
-	fname = tnum+'_'+tkind+ext
-	fpath = './DATA/'+ tuser + '_work/'+folder+'/_'+tkind
+	
+	//fpath=req.query.StudyID
+  fpath="E:\\Desktop\\Project2\\backend//86539c8ae2c52f164996d8315a9a829e/137.png"
 	fileSize = '160931'
 
 	
-	const file = fpath + '/' + fname 
+	const file = fpath
 	
 
-	mimetype = mime.lookup( fname ) 
+	//mimetype = mime.lookup( ) 
     
-    res.setHeader('Content-disposition', 'attachment; filename=' + fname ) 
-    res.setHeader('Content-type', mimetype)
+    //res.setHeader('Content-disposition', 'attachment; filename=' + fname ) 
+    //res.setHeader('Content-type', mimetype)
 
-    const filestream = fs.createReadStream(file)
-    filestream.pipe(res)
+  const filestream = fs.createReadStream(file)
+  filestream.pipe(res)
 })
 
 module.exports = router
