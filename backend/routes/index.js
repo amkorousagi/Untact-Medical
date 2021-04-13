@@ -226,7 +226,7 @@ var getDataFromStudyID = function (db, StudyID, callback) {
 
 router.get("/getURLFromStudyID", (req, res, next) => {
   
-  temp="86539c8ae2c52f164996d8315a9a829e"
+  temp="4f25ee888361f0fd66064442c76dd7d3"
   //getIMGfromStudyID(database, req.query.StudyID, function (err, docs) {
   getDataFromStudyID(database, temp, function (err, docs) {
     if (database) {
@@ -251,8 +251,8 @@ router.get('/showIMG', (req, res)=>{
 	var fpath, fileSize
 
 	
-	//fpath=req.query.StudyID
-  fpath="E:\\Desktop\\Project2\\backend//86539c8ae2c52f164996d8315a9a829e/137.png"
+	//fpath=req.query.path
+  fpath="E:\\Desktop\\Project2\\backend//4f25ee888361f0fd66064442c76dd7d3/137.png"
 	fileSize = '160931'
 
 	
@@ -268,4 +268,27 @@ router.get('/showIMG', (req, res)=>{
   filestream.pipe(res)
 })
 
+//URL 입력시 사진 출력
+router.get('/uploadReadout', (req, res)=>{
+  const ReadOut = require("../models/readout");
+   
+  var readout = new ReadOut()
+  readout.ReadId = readout._id
+  // readout.ReadText =req.query.ReadText
+  // readout.StudyId = req.query.StudyId
+  // readout.ReadResult = req.query.ReadResult
+  
+  readout.ReadText ="정말 위험합니다."
+  readout.StudyId = "4f25ee888361f0fd66064442c76dd7d3"
+  readout.ReadResult = "비정상"
+  readout.URL="E:\\Desktop\\Project2\\backend//"+readout.ReadId
+  console.log(readout)
+  
+  readout.save(function (err) {
+    //DB에 저장
+    if (err) console.log(err)
+  })
+ })
+ 
+ 
 module.exports = router
