@@ -212,7 +212,9 @@ router.get("/getdata", (req, res) => {
       res.end()
     })
 })
-var getIMGfromStudyID = function (db, StudyID, callback) {
+
+
+var getDataFromStudyID = function (db, StudyID, callback) {
   //console.log("StudyID :" +StudyID.toString())
   var studyid = database.collection("studies")
   
@@ -228,19 +230,23 @@ var getIMGfromStudyID = function (db, StudyID, callback) {
     if (docs.length > 0) {
       console.log("find StudyID [ " + docs + " ]")
       for(i=1;i<=docs[0].NumberOfImg;i++){
-          callback(null, docs[0].URL+""+i+"png")
+          callback(null, docs[0].URL+"/"+i+".png")
       }
-      console.log("end")
+      console.log("complete")
     } else {
       console.log("can not find StudyID [ " + docs + " ]")
       callback(null, null)
     }
   })
 }
-router.get("/list", (req, res, next) => {
-  console.log(req.body)
+
+//StudyID입력 시 ID에 해당하는 이미지 URL 모두 전송
+
+router.get("/getURLFromStudyID", (req, res, next) => {
+  
   temp="86539c8ae2c52f164996d8315a9a829e"
-  getIMGfromStudyID(database, temp, function (err, docs) {//req.body.StudyID
+  //getIMGfromStudyID(database, req.query.StudyID, function (err, docs) {
+  getDataFromStudyID(database, temp, function (err, docs) {
     if (database) {
       if (err) {
         console.log("Error!", err)
@@ -257,13 +263,14 @@ router.get("/list", (req, res, next) => {
   })
 })
 
-router.get('/showIMG', (req, res)=>{///:fileid
+//URL 입력시 사진 출력
+router.get('/showIMG', (req, res)=>{
 	const fileId = req.params.fileid 
 	var fname, fpath, fileSize
 
 	
-	//fpath=req.query.StudyID
-  fpath="E:\\Desktop\\Project2\\backend//86539c8ae2c52f164996d8315a9a829e/137.png"
+	fpath=req.query.StudyID
+  //fpath="E:\\Desktop\\Project2\\backend//86539c8ae2c52f164996d8315a9a829e/137.png"
 	fileSize = '160931'
 
 	
