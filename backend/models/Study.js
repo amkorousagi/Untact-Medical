@@ -13,6 +13,7 @@ const StudySchema = new mongoose.Schema({
     ReferringPhysicianName: { type: String, required: true },
     NumberOfImg: { type: String, required: true },
     URL: {type:String,required:true},
+    ReadStatus: { type: String, default: '미판독' } //판독상태
 });
 
 const Study = mongoose.model("Study",StudySchema);
