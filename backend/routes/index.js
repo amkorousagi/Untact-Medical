@@ -50,7 +50,7 @@ var storage = multer.diskStorage({
 var uploadWithOriginalFilename = multer({ storage: storage }) // 3-2
 
 const { PythonShell } = require("python-shell")
-const { db } = require("../models/readinginfo")
+const { db } = require("../models/readout")
 let options = {
   scriptPath: "",
   args: [""],
@@ -229,9 +229,8 @@ var getDataFromStudyID = function (db, StudyID, callback) {
     console.log('docs',docs)
     if (docs.length > 0) {
       console.log("find StudyID [ " + docs + " ]")
-      for(i=1;i<=docs[0].NumberOfImg;i++){
-          callback(null, docs[0].URL+"/"+i+".png")
-      }
+      callback(null, docs[0].URL)
+      callback(null, docs[0].NumberOfImg)
       console.log("complete")
     } else {
       console.log("can not find StudyID [ " + docs + " ]")
@@ -240,7 +239,7 @@ var getDataFromStudyID = function (db, StudyID, callback) {
   })
 }
 
-//StudyID입력 시 ID에 해당하는 이미지 URL 모두 전송
+//StudyID입력 시 해당 폴더 URL과 이미지 수 전송
 
 router.get("/getURLFromStudyID", (req, res, next) => {
   
@@ -265,12 +264,12 @@ router.get("/getURLFromStudyID", (req, res, next) => {
 
 //URL 입력시 사진 출력
 router.get('/showIMG', (req, res)=>{
-	const fileId = req.params.fileid 
-	var fname, fpath, fileSize
+
+	var fpath, fileSize
 
 	
-	fpath=req.query.StudyID
-  //fpath="E:\\Desktop\\Project2\\backend//86539c8ae2c52f164996d8315a9a829e/137.png"
+	//fpath=req.query.StudyID
+  fpath="E:\\Desktop\\Project2\\backend//86539c8ae2c52f164996d8315a9a829e/137.png"
 	fileSize = '160931'
 
 	
