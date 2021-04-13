@@ -212,8 +212,7 @@ var getDataFromStudyID = function (db, StudyID, callback) {
     console.log('docs',docs)
     if (docs.length > 0) {
       console.log("find StudyID [ " + docs + " ]")
-      callback(null, docs[0].URL)
-      callback(null, docs[0].NumberOfImg)
+      callback(null, docs[0])
       console.log("complete")
     } else {
       console.log("can not find StudyID [ " + docs + " ]")
@@ -251,7 +250,7 @@ router.get('/showIMG', (req, res)=>{
 	var fpath, fileSize
 
 	
-	fpath=req.query.path
+	fpath='./'+req.query.dirname+'/' + req.query.num +'.png'
   //fpath="E:\\Desktop\\Project2\\backend//4f25ee888361f0fd66064442c76dd7d3/137.png"
 	fileSize = '160931'
 
@@ -280,7 +279,7 @@ router.get('/uploadReadout', (req, res)=>{
   //readout.ReadText ="정말 위험합니다."
   //readout.StudyId = "4f25ee888361f0fd66064442c76dd7d3"
   //readout.ReadResult = "비정상"
-  readout.URL="E:\\Desktop\\Project2\\backend//"+readout.ReadId//앞쪽 절대경로 본인의 경로로. DB쪽에서 나중에 고친다 함
+  readout.URL="./"+readout.ReadId//앞쪽 절대경로 본인의 경로로. DB쪽에서 나중에 고친다 함
   console.log(readout)
   
   readout.save(function (err) {
