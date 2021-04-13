@@ -134,7 +134,7 @@ router.post("/login", (req, res, next) => {
             "  :   " +
             docs[0].AffiliatedHospital
         )
-        res.write('<br><a href="/getdata"> Get data </a>')
+        res.write('<br><a href="/getStudies"> Get data </a>')
         res.end()
       } else {
         console.log("empty error")
@@ -185,31 +185,14 @@ router.post("/signup", async (req, res, next) => {
   }
 })
 
-router.get("/getdata", (req, res) => {
+router.get("/getStudies", (req, res) => {
   database
-    .collection("dicoms")
+    .collection("studies")
     .find({})
     .toArray(function (err, docs) {
       if (err) throw err
-      //res.send(docs);
-      res.writeHead(200, { "Content-Type": "text/html;characterset=utf8" })
-      res.write("<h1>Dicom index</h1>")
-      for (let i = 0; i < docs.length; i++) {
-        res.write(
-          docs[i]._id +
-            "// " +
-            docs[i].PatientID +
-            "  :   " +
-            docs[i].PatientName +
-            "  :   " +
-            docs[i].PatientAge +
-            "  :   " +
-            docs[i].PatientBirthDate +
-            "<br/>"
-        )
-        //res.write('<br><a href="/dicom_index"> Dicom index </a>');
-      }
-      res.end()
+     
+      res.render('getStudies',{study_info:docs});
     })
 })
 

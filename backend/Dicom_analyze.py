@@ -9,7 +9,7 @@ from collections import OrderedDict
 def Write_data_json(ds,name,shape,path):
     file_data=OrderedDict()
     element_list=[['PatientID',(0x0010, 0x0020)],['PatientName',(0x0010, 0x0010)],['PatientAge',(0x0010, 0x1010)],\
-                ['PatientBirthDate',(0x0010, 0x0030)],['PatientSex',(0x0010, 0x0040)],['StudyData',(0x0008,0x0020)],\
+                ['PatientBirthDate',(0x0010, 0x0030)],['PatientSex',(0x0010, 0x0040)],['StudyDate',(0x0008,0x0020)],\
                 ['Modality',(0x0008, 0x0060)],['StudyDescription',(0x0008, 0x1030)],['ReferringPhysicianName',(0x0008, 0x0090)]]
    
     for i in range(len(element_list)):
@@ -30,7 +30,7 @@ def Write_data_json(ds,name,shape,path):
 
 def Write_data_txt(ds,name,shape,path):
     element_list=[['PatientID',(0x0010, 0x0020)],['PatientName',(0x0010, 0x0010)],['PatientAge',(0x0010, 0x1010)],\
-                ['PatientBirthDate',(0x0010, 0x0030)],['PatientSex',(0x0010, 0x0040)],['StudyData',(0x0008,0x0020)],\
+                ['PatientBirthDate',(0x0010, 0x0030)],['PatientSex',(0x0010, 0x0040)],['StudyDate',(0x0008,0x0020)],\
                 ['Modality',(0x0008, 0x0060)],['StudyDescription',(0x0008, 0x1030)],['ReferringPhysicianName',(0x0008, 0x0090)]]
    
     f = open(path + '/' + name + '.txt', 'w')

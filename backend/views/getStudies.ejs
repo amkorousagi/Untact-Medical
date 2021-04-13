@@ -1,0 +1,38 @@
+<h1>Study list</h1>
+
+<table border="9" id="Study list">
+    <tbody>
+        <thead>
+            <tr>
+               <th>Num</th>
+               <th>StudyID</th>
+               <th>PatientID</th>
+               <th>PatientName</th>
+               <th>PatientAge</th>
+               <th>PatientSex</th>
+               <th>StudyDate</th>
+               <th>Modality</th>
+               <th>StudyDescription</th>
+               <th>ReferringPhysicianName</th>
+            </tr>
+         </thead>
+    <% if(study_info.length > 0){ %>
+        <% for ( var i = 0 ; i < study_info.length ; i++){ %>
+            <tr>
+                <td> <%= i+1 %> </td>
+                <td><%= study_info[i].StudyID %></td>
+                <td><%= study_info[i].PatientID %></td>
+                <td><%= study_info[i].PatientName %></td>
+                <td><%= study_info[i].PatientAge %></td>
+                <td><%= study_info[i].PatientSex %></td>
+                <td><%= study_info[i].StudyDate %></td>
+                <td><%= study_info[i].Modality %></td>
+                <td><%= study_info[i].StudyDescription %></td>
+                <td><%= study_info[i].ReferringPhysicianName %></td>
+            </tr>
+        <% } %>
+    <% } %>
+    </tbody>
+  </table>
+
+ 
