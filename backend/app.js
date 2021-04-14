@@ -16,10 +16,15 @@
 //     console.log('Example app listening on port',3001);
 // });
 
-const port = 3000,
+const port = 3000
+const cors = require("cors")
 express = require('express'),
 app = express();
-indexRoute = require("./routes/index");
+app.use(cors())
+indexRoute = require("./routes/index")
+const loginRouter = require("./routes/login")
+const joinRouter = require("./routes/join")
+const middleware = require("./utils/middleware")
 
 //const mongoose = require('mongoose');
 // DB연결
@@ -37,7 +42,12 @@ app.set('view engine', 'ejs');
 app.use(express.static(__dirname + "/public"));
 
 //use routes
-app.use("/",indexRoute);
+app.use(middleware.tokenExtractor)
+app.use("/join", joinRouter)
+app.use("/login", loginRouter)
+
+app.use("/", middleware.userExtractor,indexRoute);
+
 
 app.listen(port,()=> {
     console.log('Example app listening on port',port);

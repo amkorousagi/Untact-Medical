@@ -16,5 +16,4 @@ const StudySchema = new mongoose.Schema({
     ReadStatus: { type: String, default: '미판독' } //판독상태
 });
 
-const Study = mongoose.model("Study",StudySchema);
-module.exports={Study};
+module.exports = mongoose.model("Study",StudySchema);

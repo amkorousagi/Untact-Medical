@@ -1,12 +1,13 @@
 express = require("express")
 router = express.Router()
-const { User } = require("../models/user")
-const { Study } = require("../models/Study")
+const User = require("../models/user")
+const Study = require("../models/Study")
 mongoose = require("mongoose")
 const multer = require("multer")
 ejs = require("ejs")
 var mime = require('mime')
 const fs = require("fs")
+
 
 router.get("/", (req, res) => {
   console.log("start")
@@ -110,6 +111,7 @@ var authUser = function (db, Email, Passwd, callback) {
     }
   })
 }
+/*
 router.post("/login", (req, res, next) => {
   console.log(req.body)
 
@@ -148,7 +150,8 @@ router.post("/login", (req, res, next) => {
     }
   })
 })
-
+*/
+/*
 router.post("/signup", async (req, res, next) => {
   console.log("body", req.body)
   //console.log("req", req);
@@ -184,7 +187,7 @@ router.post("/signup", async (req, res, next) => {
     return res.json({ success: false, err })
   }
 })
-
+*/
 router.get("/getStudies", (req, res) => {
   database
     .collection("studies")
