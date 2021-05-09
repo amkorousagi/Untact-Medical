@@ -34,7 +34,7 @@ let options = {
 readoutRouter.post(
   "/",
   async (req, res, next) => {
-    await Readout.deleteMany({})
+    //await Readout.deleteMany({})
     console.log("start")
     const readout = await Readout.create({})
     console.log("study", readout)

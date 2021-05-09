@@ -24,7 +24,7 @@ def Write_data_json(ds,name,shape,path):
     #
     file_data['StudyID']=name
 
-    file_name=path+'/'+ name+'.json'
+    file_name= name +'/data.json'
     with open(file_name,'w',encoding="utf-8") as make_file:
         json.dump(file_data,make_file,ensure_ascii=False,indent="\t")
 
@@ -55,20 +55,20 @@ def Write_data_txt(ds,name,shape,path):
     f.write(data)
     f.close()
 
-def extract_img(input_name):
-    input_path='./images/'+input_name
+def extract_img(dicomPath, imagePath):
+    input_path=dicomPath
     ds = pydicom.dcmread(input_path)
 
     #make directory
-    path = './' + input_name
+    path = imagePath
     if not os.path.isdir(path):
         os.mkdir(path)
     
     shape = ds.pixel_array.shape
 
     #Write data txt
-    Write_data_txt(ds, input_name,shape,path)
-    Write_data_json(ds, input_name,shape,path)
+    # Write_data_txt(ds, input_name,shape,path)
+    Write_data_json(ds, imagePath,shape,path)
 
     if len(shape)==2:
         #2차원
@@ -81,8 +81,8 @@ def extract_img(input_name):
         # Convert to uint
         image_2d_scaled = np.uint8(image_2d_scaled)
 
-        output_path = './'+input_name+'/'+ input_name + '.png'
-        output_path = './'+input_name+'/'+'1.png'
+        #output_path = './'+input_name+'/'+ input_name + '.png'
+        output_path = imagePath + "/1." + "png"
         with open(output_path, 'wb') as png_file:
             w = png.Writer(shape[1], shape[0], greyscale=True)
             w.write(png_file, image_2d_scaled)
@@ -100,23 +100,24 @@ def extract_img(input_name):
             image_2d_scaled = np.uint8(image_2d_scaled)
 
             #output_path = './'+input_name+'/'+input_name +'_'+ str(i) + '.png'
-            output_path = './'+input_name+'/'+ str(i+1) + '.png'
+            #output_path = './'+input_name+'/'+ str(i+1) + '.png'
+            output_path = imagePath+'/'+ str(i+1) + '.png'
             with open(output_path, 'wb') as png_file:
                 w = png.Writer(shape[2], shape[1], greyscale=True)
                 w.write(png_file, image_2d_scaled)
     #return path+'./'+input_name+'.json'
 
-def main(string):
+def main(dicomPath, imagePath):
 
     #extract_img('0012')
-    json_path=extract_img(string)
+    json_path=extract_img(dicomPath, imagePath)
     #print(string)
     # extract_img('0012')
     # extract_img('0015')
     # extract_img('0020')
     # extract_img('MRBRAIN')
     # extract_img('10001')
-    #return json_path
+    return "json_path"
 
 if __name__=='__main__':
-    main(sys.argv[1])
+    main(sys.argv[1],sys.argv[2])
