@@ -123,10 +123,10 @@ function Join(props) {
       return
     }
 
-    const result = "";
+    let result = "";
     try {
       result = await axios.post(
-        "http://localhost:3001/signup",
+        "http://localhost:3001/join",
         {
           Email: email,
           Password: password,
@@ -140,17 +140,17 @@ function Join(props) {
           },
         }
       )
+      console.log(result)
+      if (result.data.success) {
+        alert("회원가입 됨")
+        history.push("/login")
+      } else {
+        alert("실패 :" + result.data.err)
+      }
     } catch (error) {
       console.log(error);
       alert("실패 :" + error.response.data.err)
       return
-    }
-    console.log(result)
-    if (result.data.success) {
-      alert("회원가입 됨")
-      history.push("/login")
-    } else {
-      alert("실패 :" + result.data.err)
     }
   }
   const onChange = (e, label) => {

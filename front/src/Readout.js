@@ -13,18 +13,45 @@ import {
   Typography,
 } from "@material-ui/core"
 import { Container, Row, Col } from "react-bootstrap"
-const axios = require("axios")
+import qs from "query-string"
+import axios from "axios"
 
-const Readout = () => {
+const Img = ({src})=>{
+  console.log(src)
+  return <img src={src} width={"100%"}/>
+}
+
+const CD = ({setSaveableCanvas,imgSrc})=>{
+  return <CanvasDraw
+  key={imgSrc}
+  ref={(canvasDraw) => (setSaveableCanvas(canvasDraw))}
+  brushRadius={1}
+  brushColor='red'
+  canvasWidth='100%'
+  canvasHeight='100%'
+  lazyRadius={0}
+  imgSrc={imgSrc}
+/>
+}
+
+const Readout = ({ match, location }) => {
   const [value, setValue] = useState("normal")
-  const [images, setImages] = useState([lung, kakao])
+  const [images, setImages] = useState([])
   const [index, setIndex] = useState(0)
-  let saveableCanvas
+  const [patientName, setPatientName] = useState("")
+  const [patientSex, setPatientSex] = useState("")
+  const [patientAge, setPatientAge] = useState("")
+  const [studyDate, setStudyDate] = useState("")
+  const [modality, setModality] = useState("")
+  const [studyDescription, setstudyDescription] = useState("")
+  const [dirName, setDirname] = useState("")
+  const [maxImages, setMaxImages] = useState(0)
+  const id = qs.parse(location.search).id
+  const [saveableCanvas, setSaveableCanvas] = useState({})
   const handleChange = (event) => {
     setValue(event.target.value)
   }
   const handleNext = () => {
-    console.log(images);
     if (index + 1 < images.length) setIndex(index + 1)
     saveableCanvas.clear()
   }
@@ -32,13 +59,31 @@ const Readout = () => {
     if (index - 1 >= 0) setIndex(index - 1)
     saveableCanvas.clear()
   }
-  useEffect(()=>{
-    //모든 이미지 url을 불러오는 fetch
-    setImages(images.concat("http://localhost:8000/download/2"))
-  },[])
-  
+  useEffect(() => {
+    const help = async () => {
+      console.log(id)
+      const result = await axios.get("http://localhost:3001/study/" + id)
+      console.log(result.data)
+      const data = result.data
+      setPatientName(data.PatientName)
+      setPatientSex(data.PatientSex)
+      setPatientAge(data.PatientAge)
+      setStudyDate(data.StudyDate)
+      setModality(data.Modality)
+      setstudyDescription(data.StudyDescription)
+      setDirname(data.StudyID)
+      setMaxImages(data.NumberOfImg)
+      let res = []
+      for (let i = 1; i <= data.NumberOfImg; i++) {
+        res.push(
+          "http://localhost:3001/show?dirName=" + data.StudyID + "&num=" + i
+        )
+      }
+      setImages(res)
+    }
+    help()
+  }, [])
   return (
-   
     <Container>
       <Row>
         <Col>
@@ -80,23 +125,17 @@ const Readout = () => {
         </Col>
       </Row>
       <Row>
-        <Col>이미지 : {index + 1}/{images.length}</Col>
+        <Col>
+          이미지 : {index + 1}/{images.length}
+        </Col>
       </Row>
       <hr></hr>
       <Row xl={12} lg={12} md={12} sm={12} xs={12}>
         <Col xl={6} lg={6} md={6} sm={6} xs={6}>
-          <img src={images[index]} width='100%' />
+          <Img src={images[index]} />
         </Col>
         <Col xl={6} lg={6} md={6} sm={6} xs={6}>
-          <CanvasDraw
-            ref={(canvasDraw) => (saveableCanvas = canvasDraw)}
-            brushRadius={1}
-            brushColor='red'
-            canvasWidth='100%'
-            canvasHeight='100%'
-            lazyRadius={0}
-            imgSrc={images[index]}
-          />
+        <CD setSaveableCanvas={setSaveableCanvas} imgSrc={images[index]}/>
         </Col>
       </Row>
       <hr></hr>
@@ -148,35 +187,35 @@ const Readout = () => {
       </Row>
       <Row>
         <Col>
-          <Typography paragraph>이름 : 홍길동</Typography>
+          <Typography paragraph>이름 : {patientName}</Typography>
         </Col>
         <Col>
-          <Typography paragraph>성별 : 남자</Typography>
+          <Typography paragraph>성별 : {patientSex}</Typography>
         </Col>
         <Col>
-          <Typography paragraph>나이 : (만)23세</Typography>
+          <Typography paragraph>나이 : {patientAge}</Typography>
         </Col>
       </Row>
       <Row>
         <Col>
-          <Typography paragraph>촬영병원명 : 파티마</Typography>
+          <Typography paragraph>촬영일자 : {studyDate}</Typography>
         </Col>
         <Col>
-          <Typography paragraph>촬영일자 : 2020-3-4</Typography>
+          <Typography paragraph>검사장비 : {modality}</Typography>
         </Col>
         <Col>
-          <Typography paragraph>검사장비 : CT</Typography>
+          <Typography paragraph></Typography>
         </Col>
       </Row>
       <hr></hr>
       <Row>
         <Col>
           <FormLabel component='legend'>촬영 상세</FormLabel>
-          <Typography paragraph>하위</Typography>
+          <Typography paragraph>{studyDescription}</Typography>
         </Col>
         <Col>
-          <FormLabel component='legend'>요청 사항</FormLabel>
-          <Typography paragraph>없음</Typography>
+          <FormLabel component='legend'></FormLabel>
+          <Typography paragraph></Typography>
         </Col>
       </Row>
     </Container>

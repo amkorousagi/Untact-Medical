@@ -5,6 +5,12 @@ const { PythonShell } = require("python-shell")
 const path = require("path")
 const fs = require("fs")
 
+studyRouter.get("/", async (req, res, next) => {
+  //all study show
+  const studys = await Study.find({})
+  res.json(studys)
+})
+
 studyRouter.get("/:id", async (req, res, next) => {
   if (!req.params.id) {
     //all study show
@@ -16,6 +22,7 @@ studyRouter.get("/:id", async (req, res, next) => {
   res.json(study)
 })
 
+//files로 바꿔야 되지 않나
 const storage = multer.diskStorage({
   destination: async (req, file, cb) => {
     console.log("dest")
@@ -53,15 +60,15 @@ studyRouter.post(
   async (req, res, next) => {
     const new_study = {
       StudyID: req.study_id,
-      PatientID: req.patientID,
-      PatientName: req.patientName,
-      PatientAge: req.patientAge,
-      PatientBirthDate: req.patientBirthDate,
-      PatientSex: req.patientSex,
-      StudyDate: req.studyDate,
-      Modality: req.modality,
-      StudyDescription: req.studyDescription,
-      ReferringPhysicianName: req.referringPhysicianName,
+      PatientID: req.body.patientID,
+      PatientName: req.body.patientName,
+      PatientAge: req.body.patientAge,
+      PatientBirthDate: req.body.patientBirthDate,
+      PatientSex: req.body.patientSex,
+      StudyDate: req.body.studyDate,
+      Modality: req.body.modality,
+      StudyDescription: req.body.studyDescription,
+      ReferringPhysicianName: "no data",
       NumberOfImg: "" + req.cnt,
       ReadStatus: "미판독", //판독상태
     }
@@ -92,6 +99,7 @@ let storage2 = multer.diskStorage({
 })
 
 function getFile(file) {
+  console.log("get file")
   let oriFile = file.originalname
   let ext = path.extname(oriFile)
   let name = path.basename(oriFile, ext)
@@ -103,47 +111,51 @@ let upload2 = multer({
 })
 studyRouter.post(
   "/dicom",
-  upload2.any(),
+  upload2.array("dicom"),
   async (req, res, next) => {
-    await Study.deleteMany({})
+    //await Study.deleteMany({})
     console.log("start")
-    const study = await Study.create({StudyID: "ini"})
+    const study = await Study.create({ StudyID: ""+Math.floor(Math.random() * 100) })
     console.log("study", study)
     req.study_id = study._id
     req.cnt = 0
     !fs.existsSync("images/" + study._id) && fs.mkdirSync("images/" + study._id)
     next()
   },
-  function (req, res) {
-    //console.log(req.body)
+  async (req, res)=> {
+    console.log(req.body)
     console.log("ds ", req.files)
+    console.log(req.body.dicom)
     // 4
     //res.render('confirmation', { file:req.file, files:null });
 
     console.log(req.files[0].path, "images/" + req.study_id)
     options.args = [req.files[0].path, "images/" + req.study_id]
-    PythonShell.run("Dicom_analyze.py", options, function (err, data) {
+    PythonShell.run("Dicom_analyze.py", options, async (err, data)=> {
       if (err) throw err
-      
-      console.log("result, ",data);
-      
+
+      console.log("result, ", data)
+
       //dicom db에 넣는 코드 python코드가 끝나고 실행되어야함으로 pythonshell안에 넣음
-      let json_path =
-      "images/" + req.study_id + "/data.json"
+      let json_path = "images/" + req.study_id + "/data.json"
       console.log(json_path)
       //const fs = require('fs');
       var dicomdata = fs.readFileSync(json_path) //json연결
       let a = JSON.parse(dicomdata) //객체로 파싱
-      a = {...a, StudyID:req.study_id};
-      var study = new Study() //모델 인스턴스 생성
-      Object.assign(study, a) //모델 인스턴스에 파싱된Json 할당
+      a = { ...a, StudyID: req.study_id }
 
-      study.save(function (err) {
-        //DB에 저장
-        if (err) console.log(err)
-      })
-      console.log(study.RequestDate)
-      res.json(study)
+      const updated_study = await Study.findByIdAndUpdate(
+        req.study_id,
+        a,
+        (err, res) => {
+          if (err) {
+            console.log("err", err)
+          }
+          console.log("res", res)
+          return res
+        }
+      )
+      res.json(updated_study)
     })
   }
 )

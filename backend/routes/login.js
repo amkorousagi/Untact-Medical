@@ -14,7 +14,7 @@ loginRouter.post("/", async (req, res) => {
   console.log("user ", user)
   console.log("passwordCorrect ", passwordCorrect)
   if (!(user && passwordCorrect)) {
-    return res.status(401).json({ error: "invalid username or password" })
+    return res.status(401).json({ error: "invalid username or password", success:false })
   }
 
   const userForToken = {
@@ -24,6 +24,6 @@ loginRouter.post("/", async (req, res) => {
 
   const token = jwt.sign(userForToken, config.secret, { expiresIn: 60 * 60 * 24 * 3 })
 
-  res.status(200).send({ token })
+  res.status(200).send({ token, success:true })
 })
 module.exports = loginRouter

@@ -13,7 +13,7 @@
 //     console.log('Example app listening on port',3001);
 // });
 
-const port = 3000
+const port = 3001
 const cors = require("cors")
 const express = require("express")
 const app = express()

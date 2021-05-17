@@ -4,6 +4,7 @@ const bcrypt = require("bcrypt")
 const saltRounds = 10
 
 usersRouter.post("/", async (req, res, next) => {
+  console.log("join ",req.body)
   try {
     const { Email, Password, DoctorName, Role, AffiliatedHospital } = req.body
 
@@ -22,11 +23,12 @@ usersRouter.post("/", async (req, res, next) => {
 
     const savedUser = await user.save()
     if (savedUser) {
-      res.status(201).json(savedUser)
+      res.status(201).json({...savedUser,success:true})
     } else {
-      res.status(404).end()
+      res.status(404).end({success:false})
     }
   } catch (err) {
+    res.status(404).end({success:false})
     next(err)
   }
 })
