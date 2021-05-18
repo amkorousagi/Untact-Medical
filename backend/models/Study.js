@@ -12,7 +12,8 @@ const StudySchema = new mongoose.Schema({
     StudyDescription: { type: String },
     ReferringPhysicianName: { type: String },
     NumberOfImg: { type: String },
-    ReadStatus: { type: String, default: '미판독' } //판독상태
+    ReadStatus: { type: String, default: '미판독' }, //판독상태
+    ReadId : {type:String}
 });
 
 module.exports = mongoose.model("Study",StudySchema);

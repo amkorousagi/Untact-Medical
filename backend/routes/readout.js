@@ -1,7 +1,9 @@
 const readoutRouter = require("express").Router()
 const Readout = require("../models/readout")
+const Study = require("../models/Study")
 const multer = require("multer")
 const fs = require("fs")
+const { update } = require("../models/Study")
 
 readoutRouter.get("/:id", async (req, res) => {
   if (!req.params.id) {
@@ -12,61 +14,52 @@ readoutRouter.get("/:id", async (req, res) => {
   res.json(readout)
 })
 
-const storage = multer.diskStorage({
-  destination: async (req, file, cb) => {
-    console.log("dest")
-    cb(null, "images/" + req.study_id)
-  },
-  //하단 주석처리시 images/폴더안에 난수로 파일 저장->난수는 DB에 저장
-  filename: (req, file, cb) => {
-    console.log("file")
-    req.cnt++
-    console.log("cnt", req.cnt)
-    cb(null, "" + req.cnt + path.extname(file.originalname))
-  },
-})
-const upload = multer({ storage: storage })
-let options = {
-  scriptPath: "",
-  args: [""],
-}
 // 이미지 총 개수와 상위 디렉토리이름 = 스터디 id
 readoutRouter.post(
   "/",
   async (req, res, next) => {
     //await Readout.deleteMany({})
-    console.log("start")
-    const readout = await Readout.create({})
-    console.log("study", readout)
+    const readout = await Readout.create({
+      ReadId: "" + Math.random() * 90 * 90,
+    })
+    console.log("new", readout)
     req.readout_id = readout._id
-    req.cnt = 0
-    !fs.existsSync("images/" + readout._id) &&
-      fs.mkdirSync("images/" + readout._id)
     next()
   },
-  upload.array("image"),
-  async (req, res, next) => {
+  async (req, res) => {
     const new_readout = {
-      ReadId: req.readout_id,
-      StudyId: req.studyId,
-      UserId: req.user._id,
-      ReadText: req.readText,
-      ReadResult: req.readResult,
-      NumberOfImg: "" + req.cnt,
+      ReadId: "" + req.readout_id,
+      StudyId: req.body.studyId,
+      UserId: "none", //req.user._id,
+      ReadText: req.body.readText,
+      ReadResult: req.body.readResult,
+      NumberOfImg: "" + req.body.numberOfImg,
+      Canvases: req.body.canvases,
     }
-    console.log(new_readout)
-    //callback을 쓰자
+    console.log("req ", new_readout)
+
+
+
     const updated_readout = await Readout.findByIdAndUpdate(
       req.readout_id,
-      new_readout,
-      (err, res) => {
-        if (err) {
-          console.log("err", err)
-        }
-        console.log("res", res)
-        return res
-      }
-    )
+      {...new_readout},
+      {new: true}
+    ).exec()
+    console.log("up ", updated_readout)
+
+
+
+    const result = await Study.findByIdAndUpdate(
+      updated_readout.StudyId,
+      {
+        ReadStatus: updated_readout.ReadResult,
+        ReadId: updated_readout.ReadId,
+      },
+      {new: true}
+    ).exec()
+    console.log("study", result)
+
+
     res.json(updated_readout)
   }
 )

@@ -6,7 +6,8 @@ const readOutSchema = new mongoose.Schema({
     UserId: { type: String }, //리드아웃 작성자
     ReadText: { type: String }, //상세 판독 결과
     ReadResult: { type: String }, // 정상, 비정상 의견
-    NumberOfImg: { type: String } // 그린 이미지 URL
+    NumberOfImg: { type: String }, // 그린 이미지 URL
+    Canvases: {type:Map, of:String}
 });
 
 module.exports = mongoose.model('ReadOut', readOutSchema);

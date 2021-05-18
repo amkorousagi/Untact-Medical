@@ -77,6 +77,7 @@ studyRouter.post(
     const updated_study = await Study.findByIdAndUpdate(
       req.study_id,
       new_study,
+      {new:true},
       (err, res) => {
         if (err) {
           console.log("err", err)
@@ -147,6 +148,7 @@ studyRouter.post(
       const updated_study = await Study.findByIdAndUpdate(
         req.study_id,
         a,
+        {new:true},
         (err, res) => {
           if (err) {
             console.log("err", err)

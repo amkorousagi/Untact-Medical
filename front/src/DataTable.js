@@ -13,7 +13,7 @@ import { useHistory } from "react-router-dom"
 const Readout = ({ StudyId }) => {
   return (
     <Button
-      strong
+      strong="true"
       color='blue '
       style={{ margin: 16, backgroundColor: "red" }}
       onClick={(e) => {
@@ -29,7 +29,7 @@ const Readout = ({ StudyId }) => {
 const Result = ({ ReadId }) => {
   return (
     <Button
-      strong
+      strong="true"
       color='blue '
       style={{ margin: 16, backgroundColor: "red" }}
       onClick={(e) => {
@@ -123,7 +123,7 @@ export default function DataTable({ user }) {
         setCurrentRows(
           res.data.map((d) => {
             return {
-              id: d.StudyID,
+              id: d.StudyID ? d.StudyID : "myid",
               state: d.ReadStatus,
               patientID: d.PatientID,
               patientName: d.PatientName,
@@ -147,7 +147,7 @@ export default function DataTable({ user }) {
         setCurrentRows(
           res.data.map((d) => {
             return {
-              id: d.StudyID,
+              id: d.StudyID ? d.StudyID : "myid",
               state: d.ReadStatus,
               patientID: d.PatientID,
               patientName: d.PatientName,
@@ -161,6 +161,7 @@ export default function DataTable({ user }) {
               requestDate: d.StudyDate,
               readoutDate: "none",
               requestComent: d.StudyDescription,
+              readId : d.ReadId
             }
           })
           /*
@@ -221,7 +222,7 @@ export default function DataTable({ user }) {
         return user === "reader" ? (
           <Readout StudyId={params.getValue("id")} />
         ) : (
-          <Result ReadId={params.getValue("id")} />
+          <Result ReadId={params.getValue("readId")} />
         )
       },
     },

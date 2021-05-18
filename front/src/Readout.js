@@ -16,26 +16,33 @@ import { Container, Row, Col } from "react-bootstrap"
 import qs from "query-string"
 import axios from "axios"
 
-const Img = ({src})=>{
-  console.log(src)
-  return <img src={src} width={"100%"}/>
+
+const Img = ({ src }) => {
+  return <img src={src} width={"100%"} />
 }
 
-const CD = ({setSaveableCanvas,imgSrc})=>{
-  return <CanvasDraw
-  key={imgSrc}
-  ref={(canvasDraw) => (setSaveableCanvas(canvasDraw))}
-  brushRadius={1}
-  brushColor='red'
-  canvasWidth='100%'
-  canvasHeight='100%'
-  lazyRadius={0}
-  imgSrc={imgSrc}
-/>
+const CD = ({ setSaveableCanvas, imgSrc, savedCanvas, index }) => {
+  return (
+    <CanvasDraw
+      id='mycanvas'
+      key={imgSrc}
+      ref={(canvasDraw) => {
+        setSaveableCanvas(canvasDraw)
+        if (canvasDraw != null && savedCanvas[index])
+          canvasDraw.loadSaveData(savedCanvas[index])
+      }}
+      brushRadius={1}
+      brushColor='red'
+      canvasWidth='100%'
+      canvasHeight='100%'
+      lazyRadius={0}
+      imgSrc={imgSrc}
+    />
+  )
 }
 
 const Readout = ({ match, location }) => {
-  const [value, setValue] = useState("normal")
+  const [value, setValue] = useState("정상")
   const [images, setImages] = useState([])
   const [index, setIndex] = useState(0)
   const [patientName, setPatientName] = useState("")
@@ -44,19 +51,31 @@ const Readout = ({ match, location }) => {
   const [studyDate, setStudyDate] = useState("")
   const [modality, setModality] = useState("")
   const [studyDescription, setstudyDescription] = useState("")
-  const [dirName, setDirname] = useState("")
-  const [maxImages, setMaxImages] = useState(0)
   const id = qs.parse(location.search).id
   const [saveableCanvas, setSaveableCanvas] = useState({})
+  const [savedCanvas, setSavedCanvas] = useState({})
+
+  const [readText,setReadText] = useState("")
+
   const handleChange = (event) => {
     setValue(event.target.value)
   }
   const handleNext = () => {
-    if (index + 1 < images.length) setIndex(index + 1)
+    if (index + 1 < images.length) {
+      const temp = {}
+      temp[index] = saveableCanvas.getSaveData()
+      setSavedCanvas({ ...savedCanvas, ...temp })
+      setIndex(index + 1)
+    }
     saveableCanvas.clear()
   }
   const handlePrior = () => {
-    if (index - 1 >= 0) setIndex(index - 1)
+    if (index - 1 >= 0) {
+      const temp = {}
+      temp[index] = saveableCanvas.getSaveData()
+      setSavedCanvas({ ...savedCanvas, ...temp })
+      setIndex(index - 1)
+    }
     saveableCanvas.clear()
   }
   useEffect(() => {
@@ -71,8 +90,6 @@ const Readout = ({ match, location }) => {
       setStudyDate(data.StudyDate)
       setModality(data.Modality)
       setstudyDescription(data.StudyDescription)
-      setDirname(data.StudyID)
-      setMaxImages(data.NumberOfImg)
       let res = []
       for (let i = 1; i <= data.NumberOfImg; i++) {
         res.push(
@@ -100,7 +117,12 @@ const Readout = ({ match, location }) => {
           <Button
             variant='outlined'
             onClick={() => {
-              localStorage.setItem("savedDrawing", saveableCanvas.getSaveData())
+              let temp = {}
+              temp[index] = saveableCanvas.getSaveData()
+              setSavedCanvas({
+                ...savedCanvas,
+                ...temp,
+              })
             }}>
             <strong>(현재장)저장</strong>
           </Button>
@@ -123,6 +145,16 @@ const Readout = ({ match, location }) => {
             <strong>되돌리기</strong>
           </Button>
         </Col>
+        <Col>
+          <Button
+            variant='outlined'
+            onClick={() => {
+              if (savedCanvas[index])
+                saveableCanvas.loadSaveData(savedCanvas[index])
+            }}>
+            <strong>불러오기</strong>
+          </Button>
+        </Col>
       </Row>
       <Row>
         <Col>
@@ -135,7 +167,12 @@ const Readout = ({ match, location }) => {
           <Img src={images[index]} />
         </Col>
         <Col xl={6} lg={6} md={6} sm={6} xs={6}>
-        <CD setSaveableCanvas={setSaveableCanvas} imgSrc={images[index]}/>
+          <CD
+            setSaveableCanvas={setSaveableCanvas}
+            imgSrc={images[index]}
+            savedCanvas={savedCanvas}
+            index={index}
+          />
         </Col>
       </Row>
       <hr></hr>
@@ -149,12 +186,12 @@ const Readout = ({ match, location }) => {
               value={value}
               onChange={handleChange}>
               <FormControlLabel
-                value='normal'
+                value='정상'
                 control={<Radio />}
                 label='정상'
               />
               <FormControlLabel
-                value='abnormal'
+                value='이상'
                 control={<Radio />}
                 label='이상'
               />
@@ -162,21 +199,28 @@ const Readout = ({ match, location }) => {
           </FormControl>
         </Col>
         <Col>
-          <TextField placeholder='긴 소견' variant='outlined' multiline />
+          <TextField placeholder='소견' variant='outlined' multiline onChange={(e)=>setReadText(e.target.value)}/>
         </Col>
       </Row>
       <Row>
-        <Col>
-          <TextField placeholder='짧은 소견' required />
-        </Col>
+        
         <Col>
           <Button
             variant='outlined'
-            onClick={() => {
-              alert("제출합니다")
+            onClick={async() => {
+              const result = await axios.post("http://localhost:3001/readout",{
+                studyId:id,
+                readText:readText,
+                readResult:value,
+                numberOfImg: images.length,
+                canvases: savedCanvas
+              })
+              console.log(result)
             }}>
             <strong>판독 제출(완료)</strong>
           </Button>
+        </Col><Col>
+          
         </Col>
       </Row>
       <hr></hr>
