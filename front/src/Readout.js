@@ -98,7 +98,7 @@ const Readout = ({ match, location }) => {
       let res = []
       for (let i = 1; i <= data.NumberOfImg; i++) {
         res.push(
-          config.URL + "/show?dirName=" + data.StudyID + "&num=" + i
+          config.backURL + "/show?dirName=" + data.StudyID + "&num=" + i
         )
       }
       setImages(res)
