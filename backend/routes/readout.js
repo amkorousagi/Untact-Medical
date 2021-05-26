@@ -1,5 +1,5 @@
 const readoutRouter = require("express").Router()
-const Readout = require("../models/readout")
+const Readout = require("../models/Readout")
 const Study = require("../models/Study")
 const multer = require("multer")
 const fs = require("fs")
@@ -30,7 +30,7 @@ readoutRouter.post(
     const new_readout = {
       ReadId: "" + req.readout_id,
       StudyId: req.body.studyId,
-      UserId: "none", //req.user._id,
+      UserId: req.user._id,
       ReadText: req.body.readText,
       ReadResult: req.body.readResult,
       NumberOfImg: "" + req.body.numberOfImg,
@@ -54,6 +54,7 @@ readoutRouter.post(
       {
         ReadStatus: updated_readout.ReadResult,
         ReadId: updated_readout.ReadId,
+        ReadDate : Date().toString()
       },
       {new: true}
     ).exec()

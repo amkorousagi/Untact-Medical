@@ -1,6 +1,6 @@
 const jwt = require("jsonwebtoken")
 const config = require("./config")
-const User = require("../models/user")
+const User = require("../models/User")
 
 const tokenExtractor = (req, res, next) => {
   const authorization = req.get("authorization")
@@ -23,7 +23,7 @@ const userExtractor = async (req, res, next) => {
     req.user = user
   } catch (err) {
     console.log(err)
-    res.send(err)
+    res.status(400).send(err)
   }
   next()
 }

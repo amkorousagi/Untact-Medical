@@ -18,11 +18,13 @@ import { loginState } from "./state/state"
 
 
 function Home() {
+  const his = useHistory()
   return (
     <div>
       <h1>Untact Medical!</h1>
       <img src={logo} className='App-logo' alt='logo' />
-      
+      <a href={"/login"}>login </a>
+      <a href={"/join"}>join</a>
     </div>
   )
 }

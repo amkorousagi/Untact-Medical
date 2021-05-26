@@ -13,11 +13,11 @@ import { useHistory } from "react-router-dom"
 const Readout = ({ StudyId }) => {
   return (
     <Button
-      strong="true"
+      strong='true'
       color='blue '
       style={{ margin: 16, backgroundColor: "red" }}
       onClick={(e) => {
-        const win = window.open("/reader/readout?id="+StudyId, "_blank")
+        const win = window.open("/reader/readout?id=" + StudyId, "_blank")
         window.focus()
       }}>
       판독
@@ -29,11 +29,11 @@ const Readout = ({ StudyId }) => {
 const Result = ({ ReadId }) => {
   return (
     <Button
-      strong="true"
+      strong='true'
       color='blue '
       style={{ margin: 16, backgroundColor: "red" }}
       onClick={(e) => {
-        const win = window.open("/requester/result?id="+ReadId, "_blank")
+        const win = window.open("/requester/result?id=" + ReadId, "_blank")
         window.focus()
       }}>
       결과
@@ -116,55 +116,58 @@ export default function DataTable({ user }) {
   ]
   const [currentRows, setCurrentRows] = useState([])
   useEffect(() => {
-    let route
+    const token = window.localStorage.getItem("token")
     if (user == "reader") {
-      axios.get(`http://localhost:3001/study`).then((res) => {
+      axios.get(`http://localhost:3001/study`,{headers:{"Authorization":"bearer "+token}}).then((res) => {
         console.log(res.data)
-        setCurrentRows(
-          res.data.map((d) => {
-            return {
-              id: d.StudyID ? d.StudyID : "myid",
-              state: d.ReadStatus,
-              patientID: d.PatientID,
-              patientName: d.PatientName,
-              patientSex: d.PatientSex,
-              patientAge: d.PatientAge,
-              modality: d.Modality,
-              countImage: d.NumberOfImg,
-              doctorName: d.ReferringPhysicianName,
-              result: "none",
-              studyDate: d.StudyDate,
-              requestDate: d.StudyDate,
-              readoutDate: "none",
-              requestComent: d.StudyDescription,
-            }
-          })
-        )
+        if (res.status == 200) {
+          setCurrentRows(
+            res.data.map((d) => {
+              return {
+                id: d.StudyID ? d.StudyID : "myid",
+                state: d.ReadStatus,
+                patientID: d.PatientID,
+                patientName: d.PatientName,
+                patientSex: d.PatientSex,
+                patientAge: d.PatientAge,
+                modality: d.Modality,
+                countImage: d.NumberOfImg,
+                doctorName: d.ReferringPhysicianName,
+                result: "none",
+                studyDate: d.StudyDate,
+                requestDate: d.StudyDate,
+                readoutDate: "none",
+                requestComent: d.StudyDescription,
+              }
+            })
+          )
+        }
       })
     } else {
-      axios.get(`http://localhost:3001/study`).then((res) => {
-        console.log(res.data)
-        setCurrentRows(
-          res.data.map((d) => {
-            return {
-              id: d.StudyID ? d.StudyID : "myid",
-              state: d.ReadStatus,
-              patientID: d.PatientID,
-              patientName: d.PatientName,
-              patientSex: d.PatientSex,
-              patientAge: d.PatientAge,
-              modality: d.Modality,
-              countImage: d.NumberOfImg,
-              doctorName: d.ReferringPhysicianName,
-              result: "none",
-              studyDate: d.StudyDate,
-              requestDate: d.StudyDate,
-              readoutDate: "none",
-              requestComent: d.StudyDescription,
-              readId : d.ReadId
-            }
-          })
-          /*
+      axios.get(`http://localhost:3001/study`,{headers:{"Authorization":"bearer "+token}}).then((res) => {
+        console.log(res)
+        if (res.status == 200) {
+          setCurrentRows(
+            res.data.map((d) => {
+              return {
+                id: d.StudyID ? d.StudyID : "myid",
+                state: d.ReadStatus,
+                patientID: d.PatientID,
+                patientName: d.PatientName,
+                patientSex: d.PatientSex,
+                patientAge: d.PatientAge,
+                modality: d.Modality,
+                countImage: d.NumberOfImg,
+                doctorName: d.ReferringPhysicianName,
+                result: "none",
+                studyDate: d.StudyDate,
+                requestDate: d.StudyDate,
+                readoutDate: "none",
+                requestComent: d.StudyDescription,
+                readId: d.ReadId,
+              }
+            })
+            /*
           res.data.map((d) => {
             return {
               id: d.ReadId,
@@ -184,7 +187,8 @@ export default function DataTable({ user }) {
             }
           })
           */
-        )
+          )
+        }
       })
     }
   }, [])
@@ -354,7 +358,7 @@ export default function DataTable({ user }) {
           control={<Checkbox checked={completed} onChange={handlerCompleted} />}
           label='filter 판독상태완료'
         />
-        <Request user={user} history={history}/>
+        <Request user={user} history={history} />
       </FormGroup>
 
       <div

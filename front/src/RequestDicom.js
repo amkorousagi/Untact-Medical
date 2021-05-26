@@ -20,7 +20,10 @@ const Request = () => {
     const formData = new FormData();
     formData.append("dicom",dicom[0],"test.dicom")
     
-    const result = await axios.post("http://localhost:3001/study/dicom",formData)
+    const token = window.localStorage.getItem("token")
+    const result = await axios.post("http://localhost:3001/study/dicom",formData, {
+      headers: { Authorization: "bearer " + token },
+    })
     if(result.status == 200){
       alert("의뢰 생성 성공!")
     }else{

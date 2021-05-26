@@ -1,8 +1,8 @@
-express = require("express")
-router = express.Router()
-const User = require("../models/user")
+const express = require("express")
+const router = express.Router()
+const User = require("../models/User")
 const Study = require("../models/Study")
-mongoose = require("mongoose")
+const mongoose = require("mongoose")
 const multer = require("multer")
 var mime = require('mime')
 const fs = require("fs")
@@ -23,7 +23,7 @@ var storage = multer.diskStorage({
 var uploadWithOriginalFilename = multer({ storage: storage }) // 3-2
 
 const { PythonShell } = require("python-shell")
-const { db } = require("../models/readout")
+const { db } = require("../models/Readout")
 let options = {
   scriptPath: "",
   args: [""],

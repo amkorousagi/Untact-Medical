@@ -24,9 +24,11 @@ const joinRouter = require("./routes/join")
 const studyRouter = require("./routes/study")
 const showRouter = require("./routes/show")
 const readoutRouter = require("./routes/readout")
+const initRouter = require("./routes/init")
 const middleware = require("./utils/middleware")
 const logger = require("./utils/logger")
 const mongoose = require('mongoose')
+const { use } = require("./routes/study")
 
 mongoose
   .connect(config.databaseURL, {
@@ -49,12 +51,13 @@ app.use(express.json())
 
 app.use("/join", joinRouter)
 app.use("/login", loginRouter)
-
-//인증 정보, req.token req.user 채움
-//app.use(middleware.tokenExtractor)
-//app.use(middleware.userExtractor)
+app.use("/init",initRouter)
 
 app.use("/show",showRouter)
+//인증 정보, req.token req.user 채움
+app.use(middleware.tokenExtractor)
+app.use(middleware.userExtractor)
+
 app.use("/study",studyRouter)
 app.use("/readout",readoutRouter)
 

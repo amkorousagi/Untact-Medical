@@ -13,6 +13,7 @@ const StudySchema = new mongoose.Schema({
     ReferringPhysicianName: { type: String },
     NumberOfImg: { type: String },
     ReadStatus: { type: String, default: '미판독' }, //판독상태
+    ReadDate : {type:String},
     ReadId : {type:String}
 });
 

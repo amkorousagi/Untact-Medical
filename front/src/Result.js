@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from "react"
+import React, { useState, useEffect } from "react"
 import CanvasDraw from "react-canvas-draw"
 import {
   TextField,
@@ -13,7 +13,6 @@ import {
 import { Container, Row, Col } from "react-bootstrap"
 import queryString from "query-string"
 import axios from "axios"
-
 
 const CD = ({ imgSrc, savedCanvas, index }) => {
   return (
@@ -35,20 +34,20 @@ const CD = ({ imgSrc, savedCanvas, index }) => {
   )
 }
 
-const Result = ({location}) => {
+const Result = ({ location }) => {
   const [value, setValue] = useState("normal")
   const [images, setImages] = useState([])
   const [index, setIndex] = useState(0)
-  const [readText,setReadText] = useState("")
-  const [patientID,setpatientID] = useState("")
-  const [patientName,setpatientName] = useState("")
-  const [patientAge,setpatientAge] = useState("")
-  const [patientBirthDate,setpatientBirthDate] = useState("")
-  const [patientSex,setpatientSex] = useState("")
-  const [studyDate,setstudyDate] = useState("")
-  const [modality,setmodality] = useState("")
-  const [studyDescription,setstudyDescription] = useState("")
-  const [savedCanvas,setSavedCanvas] = useState({})
+  const [readText, setReadText] = useState("")
+  const [patientID, setpatientID] = useState("")
+  const [patientName, setpatientName] = useState("")
+  const [patientAge, setpatientAge] = useState("")
+  const [patientBirthDate, setpatientBirthDate] = useState("")
+  const [patientSex, setpatientSex] = useState("")
+  const [studyDate, setstudyDate] = useState("")
+  const [modality, setmodality] = useState("")
+  const [studyDescription, setstudyDescription] = useState("")
+  const [savedCanvas, setSavedCanvas] = useState({})
 
   const id = queryString.parse(location.search).id
   const handleChange = (event) => {
@@ -60,16 +59,24 @@ const Result = ({location}) => {
   const handlePrior = () => {
     if (index - 1 >= 0) setIndex(index - 1)
   }
-  useEffect(()=>{
-    const help = async()=>{
-      const result = await axios.get("http://localhost:3001/readout/"+id)
+  useEffect(() => {
+    const help = async () => {
+      const token = window.localStorage.getItem("token")
+      const result = await axios.get("http://localhost:3001/readout/" + id, {
+        headers: { Authorization: "bearer " + token },
+      })
       setReadText(result.data.ReadText)
       setValue(result.data.ReadResult)
       setSavedCanvas(result.data.Canvases)
 
       console.log(result.data)
 
-      const result2 = await axios.get("http://localhost:3001/study/"+result.data.StudyId)
+      const result2 = await axios.get(
+        "http://localhost:3001/study/" + result.data.StudyId,
+        {
+          headers: { Authorization: "bearer " + token },
+        }
+      )
       setpatientID(result2.data.PatientID)
       setpatientName(result2.data.PatientName)
       setpatientAge(result2.data.PatientAge)
@@ -79,11 +86,13 @@ const Result = ({location}) => {
       setmodality(result2.data.Modality)
       setstudyDescription(result2.data.StudyDescription)
 
-
       let res = []
       for (let i = 1; i <= result2.data.NumberOfImg; i++) {
         res.push(
-          "http://localhost:3001/show?dirName=" + result2.data.StudyID + "&num=" + i
+          "http://localhost:3001/show?dirName=" +
+            result2.data.StudyID +
+            "&num=" +
+            i
         )
       }
       setImages(res)
@@ -91,11 +100,13 @@ const Result = ({location}) => {
       console.log(result2.data)
     }
     help()
-  },[])
+  }, [])
   return (
     <Container>
       <Row>
-        <Col>이미지 : {index + 1}/{images.length}</Col>
+        <Col>
+          이미지 : {index + 1}/{images.length}
+        </Col>
         <Col>
           <Button variant='outlined' onClick={handlePrior}>
             <strong>이전</strong>
@@ -113,7 +124,7 @@ const Result = ({location}) => {
           <img src={images[index]} width='100%' />
         </Col>
         <Col xl={6} lg={6} md={6} sm={6} xs={6}>
-         <CD savedCanvas={savedCanvas} imgSrc={images[index]} index={index} />
+          <CD savedCanvas={savedCanvas} imgSrc={images[index]} index={index} />
         </Col>
       </Row>
       <hr></hr>
@@ -142,12 +153,16 @@ const Result = ({location}) => {
           </FormControl>
         </Col>
         <Col>
-          <TextField disabled placeholder={readText} variant='outlined' multiline />
+          <TextField
+            disabled
+            placeholder={readText}
+            variant='outlined'
+            multiline
+          />
         </Col>
       </Row>
       <Row>
-        <Col>
-        </Col>
+        <Col></Col>
         <Col>
           <Typography>판독일자 : 2020-3-5</Typography>
         </Col>
@@ -170,9 +185,7 @@ const Result = ({location}) => {
         </Col>
       </Row>
       <Row>
-        <Col>
-          
-        </Col>
+        <Col></Col>
         <Col>
           <Typography paragraph>촬영일자 : {studyDate}</Typography>
         </Col>

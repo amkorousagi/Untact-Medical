@@ -15,8 +15,7 @@ import {
 import { Container, Row, Col } from "react-bootstrap"
 import qs from "query-string"
 import axios from "axios"
-
-
+import {useHistory} from "react-router-dom"
 const Img = ({ src }) => {
   return <img src={src} width={"100%"} />
 }
@@ -42,6 +41,7 @@ const CD = ({ setSaveableCanvas, imgSrc, savedCanvas, index }) => {
 }
 
 const Readout = ({ match, location }) => {
+  const history = useHistory()
   const [value, setValue] = useState("정상")
   const [images, setImages] = useState([])
   const [index, setIndex] = useState(0)
@@ -55,7 +55,7 @@ const Readout = ({ match, location }) => {
   const [saveableCanvas, setSaveableCanvas] = useState({})
   const [savedCanvas, setSavedCanvas] = useState({})
 
-  const [readText,setReadText] = useState("")
+  const [readText, setReadText] = useState("")
 
   const handleChange = (event) => {
     setValue(event.target.value)
@@ -81,7 +81,10 @@ const Readout = ({ match, location }) => {
   useEffect(() => {
     const help = async () => {
       console.log(id)
-      const result = await axios.get("http://localhost:3001/study/" + id)
+      const token = window.localStorage.getItem("token")
+      const result = await axios.get("http://localhost:3001/study/" + id, {
+        headers: { Authorization: "bearer " + token },
+      })
       console.log(result.data)
       const data = result.data
       setPatientName(data.PatientName)
@@ -185,43 +188,49 @@ const Readout = ({ match, location }) => {
               name='result'
               value={value}
               onChange={handleChange}>
-              <FormControlLabel
-                value='정상'
-                control={<Radio />}
-                label='정상'
-              />
-              <FormControlLabel
-                value='이상'
-                control={<Radio />}
-                label='이상'
-              />
+              <FormControlLabel value='정상' control={<Radio />} label='정상' />
+              <FormControlLabel value='이상' control={<Radio />} label='이상' />
             </RadioGroup>
           </FormControl>
         </Col>
         <Col>
-          <TextField placeholder='소견' variant='outlined' multiline onChange={(e)=>setReadText(e.target.value)}/>
+          <TextField
+            placeholder='소견'
+            variant='outlined'
+            multiline
+            onChange={(e) => setReadText(e.target.value)}
+          />
         </Col>
       </Row>
       <Row>
-        
         <Col>
           <Button
             variant='outlined'
-            onClick={async() => {
-              const result = await axios.post("http://localhost:3001/readout",{
-                studyId:id,
-                readText:readText,
-                readResult:value,
-                numberOfImg: images.length,
-                canvases: savedCanvas
-              })
+            onClick={async () => {
+              const token = window.localStorage.getItem("token")
+              const result = await axios.post(
+                "http://localhost:3001/readout",
+                {
+                  studyId: id,
+                  readText: readText,
+                  readResult: value,
+                  numberOfImg: images.length,
+                  canvases: savedCanvas,
+                },
+                {
+                  headers: { Authorization: "bearer " + token },
+                }
+              )
               console.log(result)
+              if(result.status==200){
+                alert("정상 제출됨!")
+                history.push("/reader")
+              }
             }}>
             <strong>판독 제출(완료)</strong>
           </Button>
-        </Col><Col>
-          
         </Col>
+        <Col></Col>
       </Row>
       <hr></hr>
       <Row>

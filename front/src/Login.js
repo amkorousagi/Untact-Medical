@@ -50,7 +50,7 @@ function Login(props) {
       }
     } catch (error) {
       console.log(error)
-      alert("실패 :" + error.response.data.err)
+      alert("실패 :" + error)
       return
     }
   }

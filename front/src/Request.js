@@ -40,7 +40,10 @@ const Request = () => {
       formData.append("image",images[i],i)
     }
     
-    const result = await axios.post("http://localhost:3001/study",formData)
+    const token = window.localStorage.getItem("token")
+    const result = await axios.post("http://localhost:3001/study",formData, {
+      headers: { Authorization: "bearer " + token },
+    })
     if(result.status == 200){
       alert("의뢰 생성 성공!")
     }else{

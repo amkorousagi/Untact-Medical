@@ -149,12 +149,12 @@ studyRouter.post(
         req.study_id,
         a,
         {new:true},
-        (err, res) => {
+        (err, result) => {
           if (err) {
             console.log("err", err)
           }
-          console.log("res", res)
-          return res
+          console.log("res", result)
+          return result
         }
       )
       res.json(updated_study)
