@@ -4,32 +4,30 @@ const bcrypt = require("bcrypt-nodejs")
 const saltRounds = 10
 
 usersRouter.post("/", async (req, res, next) => {
-  console.log("join ",req.body)
-  try {
-    const { Email, Password, DoctorName, Role, AffiliatedHospital } = req.body
+  console.log("join ", req.body)
+  const { Email, Password, DoctorName, Role, AffiliatedHospital } = req.body
 
-    if (Email === undefined || Password === undefined) {
-      res.status(400).end()
-    } else if (DoctorName.length < 3 || Password.length < 3) {
-      res.status(400).end()
+  if (Email === undefined || Password === undefined) {
+    res.status(400).end()
+  } else if (DoctorName.length < 3 || Password.length < 3) {
+    res.status(400).end()
+  }
+
+  bcrypt.hash(Password, saltRounds, (err, hashedpassword) => {
+    if (err) {
+      res.status(404).json({ success: false })
+      next(err)
     }
-
-    const hashedpassword = await bcrypt.hash(Password, saltRounds)
-
     const user = new User({
       ...req.body,
       Password: hashedpassword,
     })
-
     const savedUser = await user.save()
     if (savedUser) {
-      res.status(201).json({...savedUser,success:true})
+      res.status(201).json({ ...savedUser, success: true })
     } else {
-      res.status(404).json({success:false})
+      res.status(404).json({ success: false })
     }
-  } catch (err) {
-    res.status(404).json({success:false})
-    next(err)
-  }
+  })
 })
 module.exports = usersRouter
