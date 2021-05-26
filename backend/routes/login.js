@@ -1,5 +1,5 @@
 const jwt = require("jsonwebtoken")
-const bcrypt = require("bcrypt-node")
+const bcrypt = require("bcrypt-nodejs")
 const loginRouter = require("express").Router()
 const User = require("../models/User")
 const config = require("../utils/config")

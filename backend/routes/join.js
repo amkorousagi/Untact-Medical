@@ -1,6 +1,6 @@
 const usersRouter = require("express").Router()
 const User = require("../models/User")
-const bcrypt = require("bcrypt-node")
+const bcrypt = require("bcrypt-nodejs")
 const saltRounds = 10
 
 usersRouter.post("/", async (req, res, next) => {
@@ -25,10 +25,10 @@ usersRouter.post("/", async (req, res, next) => {
     if (savedUser) {
       res.status(201).json({...savedUser,success:true})
     } else {
-      res.status(404).end({success:false})
+      res.status(404).json({success:false})
     }
   } catch (err) {
-    res.status(404).end({success:false})
+    res.status(404).json({success:false})
     next(err)
   }
 })
