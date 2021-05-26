@@ -61,7 +61,7 @@ app.use(middleware.userExtractor)
 app.use("/study",studyRouter)
 app.use("/readout",readoutRouter)
 
-app.listen(port, () => {
+app.listen(port,"0.0.0.0", () => {
   console.log("Example app listening on port", port)
 })
 
