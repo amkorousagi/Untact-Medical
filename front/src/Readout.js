@@ -16,6 +16,8 @@ import { Container, Row, Col } from "react-bootstrap"
 import qs from "query-string"
 import axios from "axios"
 import {useHistory} from "react-router-dom"
+const config = require("../config")
+
 const Img = ({ src }) => {
   return <img src={src} width={"100%"} />
 }
@@ -82,7 +84,7 @@ const Readout = ({ match, location }) => {
     const help = async () => {
       console.log(id)
       const token = window.localStorage.getItem("token")
-      const result = await axios.get("http://localhost:3001/study/" + id, {
+      const result = await axios.get(config.backURL + "/study/" + id, {
         headers: { Authorization: "bearer " + token },
       })
       console.log(result.data)
@@ -96,7 +98,7 @@ const Readout = ({ match, location }) => {
       let res = []
       for (let i = 1; i <= data.NumberOfImg; i++) {
         res.push(
-          "http://localhost:3001/show?dirName=" + data.StudyID + "&num=" + i
+          config.URL + "/show?dirName=" + data.StudyID + "&num=" + i
         )
       }
       setImages(res)
@@ -209,7 +211,7 @@ const Readout = ({ match, location }) => {
             onClick={async () => {
               const token = window.localStorage.getItem("token")
               const result = await axios.post(
-                "http://localhost:3001/readout",
+                config.backURL + "/readout",
                 {
                   studyId: id,
                   readText: readText,

@@ -8,6 +8,7 @@ import {
 } from "@material-ui/core"
 import { Container, Row, Col } from "react-bootstrap"
 import axios from "axios"
+const config = require("../config")
 
 const Request = () => {
   const [dicom, setDicom] = useState([])
@@ -21,7 +22,7 @@ const Request = () => {
     formData.append("dicom",dicom[0],"test.dicom")
     
     const token = window.localStorage.getItem("token")
-    const result = await axios.post("http://localhost:3001/study/dicom",formData, {
+    const result = await axios.post(config.backURL + "/study/dicom",formData, {
       headers: { Authorization: "bearer " + token },
     })
     if(result.status == 200){

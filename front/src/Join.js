@@ -5,6 +5,7 @@ import { useRecoilState } from "recoil"
 import { isDoctorState } from "./state/state"
 import { Input } from "@material-ui/core"
 const axios = require("axios")
+const config = require("../config")
 /*
 const Input = styled.input.attrs((props) => ({
   type: "text",
@@ -126,7 +127,7 @@ function Join(props) {
     let result = "";
     try {
       result = await axios.post(
-        "http://localhost:3001/join",
+        config.backURL + "/join",
         {
           Email: email,
           Password: password,

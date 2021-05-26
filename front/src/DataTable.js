@@ -10,6 +10,7 @@ import {
   FormControlLabel,
 } from "@material-ui/core"
 import { useHistory } from "react-router-dom"
+const config = require("../config")
 const Readout = ({ StudyId }) => {
   return (
     <Button
@@ -118,7 +119,7 @@ export default function DataTable({ user }) {
   useEffect(() => {
     const token = window.localStorage.getItem("token")
     if (user == "reader") {
-      axios.get(`http://localhost:3001/study`,{headers:{"Authorization":"bearer "+token}}).then((res) => {
+      axios.get(config.backURL + `/study`,{headers:{"Authorization":"bearer "+token}}).then((res) => {
         console.log(res.data)
         if (res.status == 200) {
           setCurrentRows(
@@ -144,7 +145,7 @@ export default function DataTable({ user }) {
         }
       })
     } else {
-      axios.get(`http://localhost:3001/study`,{headers:{"Authorization":"bearer "+token}}).then((res) => {
+      axios.get(config.backURL + `/study`,{headers:{"Authorization":"bearer "+token}}).then((res) => {
         console.log(res)
         if (res.status == 200) {
           setCurrentRows(

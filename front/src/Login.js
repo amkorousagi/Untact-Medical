@@ -7,6 +7,7 @@ import { useRecoilState } from "recoil"
 import { loginState, isDoctorState } from "./state/state"
 import { Input } from "@material-ui/core"
 import axios from "axios"
+const config = require("../config")
 
 const LoginInput = ({setEmail,setPassword}) => {
   return (
@@ -27,7 +28,7 @@ function Login(props) {
   const routeChange = async (e) => {
     try {
       const result = await axios.post(
-        "http://localhost:3001/login",
+        config.backURL + "/login",
         {
           Email: email,
           Password: password,

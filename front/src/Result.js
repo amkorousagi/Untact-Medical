@@ -14,6 +14,7 @@ import { Container, Row, Col } from "react-bootstrap"
 import queryString from "query-string"
 import axios from "axios"
 
+const config = require("../config")
 const CD = ({ imgSrc, savedCanvas, index }) => {
   return (
     <CanvasDraw
@@ -62,7 +63,7 @@ const Result = ({ location }) => {
   useEffect(() => {
     const help = async () => {
       const token = window.localStorage.getItem("token")
-      const result = await axios.get("http://localhost:3001/readout/" + id, {
+      const result = await axios.get(config.backURL+"/readout/" + id, {
         headers: { Authorization: "bearer " + token },
       })
       setReadText(result.data.ReadText)
@@ -72,7 +73,7 @@ const Result = ({ location }) => {
       console.log(result.data)
 
       const result2 = await axios.get(
-        "http://localhost:3001/study/" + result.data.StudyId,
+        config.backURL+"/study/" + result.data.StudyId,
         {
           headers: { Authorization: "bearer " + token },
         }
@@ -89,7 +90,7 @@ const Result = ({ location }) => {
       let res = []
       for (let i = 1; i <= result2.data.NumberOfImg; i++) {
         res.push(
-          "http://localhost:3001/show?dirName=" +
+          config.backURL + "/show?dirName=" +
             result2.data.StudyID +
             "&num=" +
             i
