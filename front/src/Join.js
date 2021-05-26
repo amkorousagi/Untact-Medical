@@ -5,7 +5,7 @@ import { useRecoilState } from "recoil"
 import { isDoctorState } from "./state/state"
 import { Input } from "@material-ui/core"
 const axios = require("axios")
-const config = require("../config")
+const config = require("./config")
 /*
 const Input = styled.input.attrs((props) => ({
   type: "text",

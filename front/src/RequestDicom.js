@@ -8,7 +8,7 @@ import {
 } from "@material-ui/core"
 import { Container, Row, Col } from "react-bootstrap"
 import axios from "axios"
-const config = require("../config")
+const config = require("./config")
 
 const Request = () => {
   const [dicom, setDicom] = useState([])

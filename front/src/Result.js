@@ -14,7 +14,7 @@ import { Container, Row, Col } from "react-bootstrap"
 import queryString from "query-string"
 import axios from "axios"
 
-const config = require("../config")
+const config = require("./config")
 const CD = ({ imgSrc, savedCanvas, index }) => {
   return (
     <CanvasDraw

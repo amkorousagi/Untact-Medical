@@ -10,7 +10,7 @@ import {
   FormControlLabel,
 } from "@material-ui/core"
 import { useHistory } from "react-router-dom"
-const config = require("../config")
+const config = require("./config")
 const Readout = ({ StudyId }) => {
   return (
     <Button

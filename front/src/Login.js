@@ -7,7 +7,7 @@ import { useRecoilState } from "recoil"
 import { loginState, isDoctorState } from "./state/state"
 import { Input } from "@material-ui/core"
 import axios from "axios"
-const config = require("../config")
+const config = require("./config")
 
 const LoginInput = ({setEmail,setPassword}) => {
   return (

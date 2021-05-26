@@ -16,7 +16,7 @@ import { Container, Row, Col } from "react-bootstrap"
 import qs from "query-string"
 import axios from "axios"
 import {useHistory} from "react-router-dom"
-const config = require("../config")
+const config = require("./config")
 
 const Img = ({ src }) => {
   return <img src={src} width={"100%"} />
