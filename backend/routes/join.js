@@ -13,21 +13,24 @@ usersRouter.post("/", async (req, res, next) => {
     res.status(400).end()
   }
 
-  bcrypt.hash(Password, saltRounds, (err, hashedpassword) => {
+  bcrypt.hash(Password, null, null, (err, hashedpassword) => {
     if (err) {
       res.status(404).json({ success: false })
       next(err)
     }
+	console.log("mypassword is",hashedpassword)
     const user = new User({
       ...req.body,
       Password: hashedpassword,
     })
-    const savedUser = await user.save()
-    if (savedUser) {
-      res.status(201).json({ ...savedUser, success: true })
-    } else {
-      res.status(404).json({ success: false })
-    }
+    const savedUser = user.save().then(savedUser=>{
+		if (savedUser) {
+			res.status(201).json({ ...savedUser, success: true })
+	      } else {
+		    res.status(404).json({ success: false })
+			}
+
+	})
   })
 })
 module.exports = usersRouter
