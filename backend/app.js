@@ -48,7 +48,10 @@ mongoose
 //use routes
 app.use(cors())
 app.use(express.json())
+app.use("/test",(req,res)=>{
+  res.end({body:"mytest"})
 
+})
 app.use("/join", joinRouter)
 app.use("/login", loginRouter)
 app.use("/init",initRouter)

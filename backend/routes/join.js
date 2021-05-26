@@ -1,6 +1,6 @@
 const usersRouter = require("express").Router()
 const User = require("../models/User")
-const bcrypt = require("bcrypt-nodejs")
+const bcrypt = require("bcrypt-node")
 const saltRounds = 10
 
 usersRouter.post("/", async (req, res, next) => {
