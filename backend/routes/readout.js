@@ -54,7 +54,7 @@ readoutRouter.post(
       {
         ReadStatus: updated_readout.ReadResult,
         ReadId: updated_readout.ReadId,
-        ReadDate : Date().toString()
+        ReadDate : "" + Date.now()
       },
       {new: true}
     ).exec()

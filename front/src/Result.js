@@ -48,6 +48,7 @@ const Result = ({ location }) => {
   const [studyDate, setstudyDate] = useState("")
   const [modality, setmodality] = useState("")
   const [studyDescription, setstudyDescription] = useState("")
+  const [readDate,setReadDate] = useState("")
   const [savedCanvas, setSavedCanvas] = useState({})
 
   const id = queryString.parse(location.search).id
@@ -86,6 +87,7 @@ const Result = ({ location }) => {
       setstudyDate(result2.data.StudyDate)
       setmodality(result2.data.Modality)
       setstudyDescription(result2.data.StudyDescription)
+      setReadDate(result2.data.ReadDate)
 
       let res = []
       for (let i = 1; i <= result2.data.NumberOfImg; i++) {
@@ -165,7 +167,7 @@ const Result = ({ location }) => {
       <Row>
         <Col></Col>
         <Col>
-          <Typography>판독일자 : 2020-3-5</Typography>
+          <Typography>판독일자 : {readDate}</Typography>
         </Col>
       </Row>
       <hr></hr>
