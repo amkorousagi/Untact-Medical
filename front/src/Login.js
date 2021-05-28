@@ -47,7 +47,7 @@ function Login(props) {
         if (isDoctor) history.push("/reader")
         else history.push("/requester")
       } else {
-        alert("실패 :" + result.data.err)
+        alert("실패 :" + result.data)
       }
     } catch (error) {
       console.log(error)

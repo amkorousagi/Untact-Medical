@@ -8,7 +8,9 @@ import {
 } from "@material-ui/core"
 import { Container, Row, Col } from "react-bootstrap"
 import axios from "axios"
+import {useHistory} from "react-router-dom"
 const config = require("./config")
+
 
 const Request = () => {
   const [images, setImages] = useState([])
@@ -21,7 +23,7 @@ const Request = () => {
   const [modality,setmodality] = useState("")
   const [studyDescription,setstudyDescription] = useState("")
 
-
+  const history = useHistory()
   const onChange = (e) => {
     setImages(e.target.files)
   }
@@ -47,6 +49,7 @@ const Request = () => {
     })
     if(result.status == 200){
       alert("의뢰 생성 성공!")
+      history.push("/requester")
     }else{
       alert("실패 ",result)
     }

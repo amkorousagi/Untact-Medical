@@ -115,6 +115,7 @@ export default function DataTable({ user }) {
       requestComent: "요로시쿠",
     },
   ]
+  const [origin,setOrigin] = useState([])
   const [currentRows, setCurrentRows] = useState([])
   useEffect(() => {
     const token = window.localStorage.getItem("token")
@@ -122,6 +123,25 @@ export default function DataTable({ user }) {
       axios.get(config.backURL + `/study`,{headers:{"Authorization":"bearer "+token}}).then((res) => {
         console.log(res.data)
         if (res.status == 200) {
+          setOrigin(
+            res.data.map((d) => {
+              return {
+                id: d.StudyID ? d.StudyID : "myid",
+                state: d.ReadStatus,
+                patientID: d.PatientID,
+                patientName: d.PatientName,
+                patientSex: d.PatientSex,
+                patientAge: d.PatientAge,
+                modality: d.Modality,
+                countImage: d.NumberOfImg,
+                doctorName: d.ReferringPhysicianName,
+                studyDate: d.StudyDate,
+                requestDate: d.StudyDate,
+                readoutDate: d.ReadDate,
+                requestComent: d.StudyDescription,
+              }
+            })
+          )
           setCurrentRows(
             res.data.map((d) => {
               return {
@@ -134,10 +154,9 @@ export default function DataTable({ user }) {
                 modality: d.Modality,
                 countImage: d.NumberOfImg,
                 doctorName: d.ReferringPhysicianName,
-                result: "none",
                 studyDate: d.StudyDate,
                 requestDate: d.StudyDate,
-                readoutDate: "none",
+                readoutDate: d.ReadDate,
                 requestComent: d.StudyDescription,
               }
             })
@@ -148,6 +167,26 @@ export default function DataTable({ user }) {
       axios.get(config.backURL + `/study`,{headers:{"Authorization":"bearer "+token}}).then((res) => {
         console.log(res)
         if (res.status == 200) {
+          setOrigin(
+            res.data.map((d) => {
+              return {
+                id: d.StudyID ? d.StudyID : "myid",
+                state: d.ReadStatus,
+                patientID: d.PatientID,
+                patientName: d.PatientName,
+                patientSex: d.PatientSex,
+                patientAge: d.PatientAge,
+                modality: d.Modality,
+                countImage: d.NumberOfImg,
+                doctorName: d.ReferringPhysicianName,
+                studyDate: d.StudyDate,
+                requestDate: d.StudyDate,
+                readoutDate: d.ReadDate,
+                requestComent: d.StudyDescription,
+                readId: d.ReadId,
+              }
+            })
+          )
           setCurrentRows(
             res.data.map((d) => {
               return {
@@ -160,34 +199,13 @@ export default function DataTable({ user }) {
                 modality: d.Modality,
                 countImage: d.NumberOfImg,
                 doctorName: d.ReferringPhysicianName,
-                result: "none",
                 studyDate: d.StudyDate,
                 requestDate: d.StudyDate,
-                readoutDate: "none",
+                readoutDate: d.ReadDate,
                 requestComent: d.StudyDescription,
                 readId: d.ReadId,
               }
             })
-            /*
-          res.data.map((d) => {
-            return {
-              id: d.ReadId,
-              state: d.ReadResult,
-              patientID: d.PatientID,
-              patientName: d.NumberOfImg,
-              patientSex: d.PatientSex,
-              patientAge: d.PatientAge,
-              modality: d.Modality,
-              countImage: d.NumberOfImg,
-              doctorName: d.ReferringPhysicianName,
-              result: d.ReadResult,
-              studyDate: d.StudyDate,
-              requestDate: d.StudyDate,
-              readoutDate: "none",
-              requestComent: d.StudyDescription,
-            }
-          })
-          */
           )
         }
       })
@@ -214,7 +232,6 @@ export default function DataTable({ user }) {
       width: 120,
     },
     { field: "doctorName", headerName: "판독의사명", width: 120 },
-    { field: "result", headerName: "판독결과", width: 120 },
     { field: "studyDate", headerName: "검사일자", width: 120 },
     { field: "requestDate", headerName: "요청일자", width: 120 },
     { field: "readoutDate", headerName: "판독일자", width: 120 },
@@ -238,15 +255,14 @@ export default function DataTable({ user }) {
   const [proceeding, setProceeding] = useState(false)
   const [completed, setCompleted] = useState(false)
   const history = useHistory()
-  const interestedRows = ({ abnormal, before, proceeding, completed }) => {
-    let temp = currentRows
-    if (abnormal) temp = temp.filter((r) => r.result === "이상소견")
+  const interestedRows = ({ abnormal, before, completed }) => {
+    let temp = origin
+    if (abnormal) temp = temp.filter((r) => r.state === "이상")
     if (before | proceeding | completed)
       temp = temp.filter(
         (r) =>
-          ((r.state === "이전") & before) |
-          ((r.state === "진행중") & proceeding) |
-          ((r.state === "완료") & completed)
+          ((r.state === "미판독") & before) |
+          ((r.state === "정상") & completed)
       )
     return temp
   }
@@ -257,7 +273,6 @@ export default function DataTable({ user }) {
         interestedRows({
           abnormal: !abnormal,
           before: before,
-          proceeding: proceeding,
           completed: completed,
         })
       )
@@ -266,7 +281,6 @@ export default function DataTable({ user }) {
         interestedRows({
           abnormal: !abnormal,
           before: before,
-          proceeding: proceeding,
           completed: completed,
         })
       )
@@ -279,7 +293,6 @@ export default function DataTable({ user }) {
         interestedRows({
           abnormal: abnormal,
           before: !before,
-          proceeding: proceeding,
           completed: completed,
         })
       )
@@ -288,29 +301,6 @@ export default function DataTable({ user }) {
         interestedRows({
           abnormal: abnormal,
           before: !before,
-          proceeding: proceeding,
-          completed: completed,
-        })
-      )
-    }
-  }
-  const handlerProceeding = (e) => {
-    setProceeding(!proceeding)
-    if (!proceeding == true) {
-      setCurrentRows(
-        interestedRows({
-          abnormal: abnormal,
-          before: before,
-          proceeding: !proceeding,
-          completed: completed,
-        })
-      )
-    } else {
-      setCurrentRows(
-        interestedRows({
-          abnormal: abnormal,
-          before: before,
-          proceeding: !proceeding,
           completed: completed,
         })
       )
@@ -340,24 +330,18 @@ export default function DataTable({ user }) {
   }
   return (
     <>
-      <FormGroup row>
-        <FormControlLabel
-          control={<Checkbox checked={abnormal} onChange={handlerAbnormal} />}
-          label='filter 판독결과이상'
-        />
-        <FormControlLabel
+      <FormGroup row><FormControlLabel
           control={<Checkbox checked={before} onChange={handlerBefore} />}
           label='filter 판독상태이전'
         />
         <FormControlLabel
-          control={
-            <Checkbox checked={proceeding} onChange={handlerProceeding} />
-          }
-          label='filter 판독상태진행중'
+          control={<Checkbox checked={abnormal} onChange={handlerAbnormal} />}
+          label='filter 판독결과이상'
         />
+        
         <FormControlLabel
           control={<Checkbox checked={completed} onChange={handlerCompleted} />}
-          label='filter 판독상태완료'
+          label='filter 판독결과정상'
         />
         <Request user={user} history={history} />
       </FormGroup>
@@ -366,6 +350,9 @@ export default function DataTable({ user }) {
         style={{ height: 500, width: "100%", backgroundColor: "deepskyblue" }}>
         <DataGrid rows={currentRows} columns={columns} pageSize={7} />
       </div>
+      <button onClick={()=>{
+        history.push(user=="reader"?"/requester":"/reader")
+      }}>{user=="reader"?"의뢰자 페이지로":"판독자 페이지로"}</button>
     </>
   )
 }
