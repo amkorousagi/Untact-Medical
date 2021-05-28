@@ -97,8 +97,11 @@ def mask_to_image(mask):
 
 
 if __name__ == "__main__":
+    # 인풋파일 여러개 받기
     args = get_args()
     in_files = args.input
+
+    # 아웃풋 파일 디렉토리 이름 정할기
     out_files = get_output_filenames(args)
 
     net = UNet(n_channels=3, n_classes=1)
@@ -112,6 +115,7 @@ if __name__ == "__main__":
 
     logging.info("Model loaded !")
 
+    # 이걸 여러번 해야됨
     for i, fn in enumerate(in_files):
         logging.info("\nPredicting image {} ...".format(fn))
 

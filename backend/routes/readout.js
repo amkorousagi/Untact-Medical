@@ -54,7 +54,8 @@ readoutRouter.post(
       {
         ReadStatus: updated_readout.ReadResult,
         ReadId: updated_readout.ReadId,
-        ReadDate : "" + Date.now()
+        ReferringPhysicianName: req.user.DoctorName,
+        ReadDate : Date().toString()
       },
       {new: true}
     ).exec()

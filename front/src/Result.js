@@ -50,6 +50,9 @@ const Result = ({ location }) => {
   const [studyDescription, setstudyDescription] = useState("")
   const [readDate,setReadDate] = useState("")
   const [savedCanvas, setSavedCanvas] = useState({})
+  const [doctorName, setDoctorName] = useState("")
+  const [hospital, setHospital] = useState("")
+  const [major, setMajor] = useState("")
 
   const id = queryString.parse(location.search).id
   const handleChange = (event) => {
@@ -101,6 +104,14 @@ const Result = ({ location }) => {
       setImages(res)
 
       console.log(result2.data)
+
+      const result3 = await axios.get(config.backURL+"/doctor/"+result.data.UserId, {
+        headers: { Authorization: "bearer " + token },
+      })
+      console.log(result3.data)
+      setDoctorName(result3.data.DoctorName)
+      setHospital(result3.data.AffiliatedHospital)
+      setMajor(result3.data.Role)
     }
     help()
   }, [])
@@ -203,8 +214,6 @@ const Result = ({ location }) => {
           <Typography paragraph>{studyDescription}</Typography>
         </Col>
         <Col>
-          <FormLabel component='legend'>요청 사항</FormLabel>
-          <Typography paragraph>없음</Typography>
         </Col>
       </Row>
       <Row>
@@ -214,13 +223,13 @@ const Result = ({ location }) => {
       </Row>
       <Row>
         <Col>
-          <Typography paragraph>이름 : 김제빵</Typography>
+          <Typography paragraph>이름 : {doctorName}</Typography>
         </Col>
         <Col>
-          <Typography paragraph>소속병원명 : 파티마</Typography>
+          <Typography paragraph>소속병원명 : {hospital}</Typography>
         </Col>
         <Col>
-          <Typography paragraph>전공 : 소아과</Typography>
+          <Typography paragraph>전공 : {major}</Typography>
         </Col>
       </Row>
     </Container>

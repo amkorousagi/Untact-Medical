@@ -116,7 +116,18 @@ studyRouter.post(
   async (req, res, next) => {
     //await Study.deleteMany({})
     console.log("start")
-    const study = await Study.create({ StudyID: ""+Math.floor(Math.random() * 100) })
+    let temp;
+    for(;;){
+      temp = "" + Math.floor(Math.random() * 10000)
+      const myres = await Study.find({StudyID:temp});
+      console.log(myres.length)
+      if(myres.length != 0){
+        continue;
+      }else{
+        break;
+      }
+    }
+    const study = await Study.create({ StudyID: temp })
     console.log("study", study)
     req.study_id = study._id
     req.cnt = 0

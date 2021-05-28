@@ -25,6 +25,7 @@ const studyRouter = require("./routes/study")
 const showRouter = require("./routes/show")
 const readoutRouter = require("./routes/readout")
 const initRouter = require("./routes/init")
+const doctorRouter = require("./routes/doctor")
 const middleware = require("./utils/middleware")
 const logger = require("./utils/logger")
 const mongoose = require('mongoose')
@@ -63,6 +64,7 @@ app.use(middleware.userExtractor)
 
 app.use("/study",studyRouter)
 app.use("/readout",readoutRouter)
+app.use("/doctor",doctorRouter)
 
 app.listen(port,"0.0.0.0", () => {
   console.log("Example app listening on port", port)
