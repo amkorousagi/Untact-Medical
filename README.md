@@ -7,3 +7,9 @@
 host : untactmedi.synology.me
 
 port: 61903
+
+# AI 예측 명령어
+
+python3 predict.py -i 이미지폴더이름
+
+-> {이미지폴더이름}/predict_result/ 안에 예측 이미지 
