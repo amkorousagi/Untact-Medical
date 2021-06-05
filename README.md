@@ -12,4 +12,4 @@ port: 61903
 
 python3 predict.py -i 이미지폴더이름
 
--> {이미지폴더이름}/predict_result/ 안에 예측 이미지 
+-> {이미지폴더이름}/predict_result/ 디렉토리에 판독 이미지들 저장됨
