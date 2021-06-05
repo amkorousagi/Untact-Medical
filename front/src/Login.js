@@ -12,8 +12,8 @@ const config = require("./config")
 const LoginInput = ({setEmail,setPassword}) => {
   return (
     <div>
-      <Input style={{ margin: "5px" }} placeholder='이메일' onChange={(e)=>setEmail(e.target.value)}/>
-      <Input style={{ margin: "5px" }} placeholder='비밀번호'onChange={(e)=>setPassword(e.target.value)} />
+      <Input style={{ margin: "5px" }} type="id" placeholder='이메일' onChange={(e)=>setEmail(e.target.value)}/>
+      <Input style={{ margin: "5px" }} type="password" placeholder='비밀번호'onChange={(e)=>setPassword(e.target.value)} />
     </div>
   )
 }
@@ -56,8 +56,7 @@ function Login(props) {
     }
   }
   return (
-    <div>
-      <h1>Untact Medical!</h1>
+    <div style={{textAlign:"center", margin:50}}>
       <LoginInput setEmail={setEmail} setPassword={setPassword}/>
       <button
         style={{

@@ -347,12 +347,13 @@ export default function DataTable({ user }) {
       </FormGroup>
 
       <div
-        style={{ height: 500, width: "100%", backgroundColor: "deepskyblue" }}>
+        style={{ height: 500, width: "100%", backgroundColor:"white" }}>
         <DataGrid rows={currentRows} columns={columns} pageSize={7} />
       </div>
-      <button onClick={()=>{
+      <div style={{textAlign:"right"}}>
+      <Button style={{margin:50, backgroundColor:"red"}} onClick={()=>{
         history.push(user=="reader"?"/requester":"/reader")
-      }}>{user=="reader"?"의뢰자 페이지로":"판독자 페이지로"}</button>
+      }}>{user=="reader"?"의뢰자 페이지로":"판독자 페이지로"}</Button></div>
     </>
   )
 }

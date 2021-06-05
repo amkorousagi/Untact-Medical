@@ -133,8 +133,8 @@ if __name__ == "__main__":
         fn=path+'/'+fn
         logging.info("\nPredicting image {} ...".format(fn))
 
-        img = Image.open(fn)
-
+        img = Image.open(fn).convert("RGB")
+        #print(img)
         mask = predict_img(net=net,
                            full_img=img,
                            scale_factor=args.scale,

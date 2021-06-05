@@ -4,6 +4,7 @@ const multer = require("multer")
 const { PythonShell } = require("python-shell")
 const path = require("path")
 const fs = require("fs")
+const {predictMiddleware} =require("../utils/middleware")
 
 studyRouter.get("/", async (req, res, next) => {
   //all study show
@@ -87,7 +88,9 @@ studyRouter.post(
       }
     )
     res.json(updated_study)
-  }
+    next()
+  },
+  predictMiddleware
 )
 
 let storage2 = multer.diskStorage({
@@ -134,7 +137,7 @@ studyRouter.post(
     !fs.existsSync("images/" + study._id) && fs.mkdirSync("images/" + study._id)
     next()
   },
-  async (req, res)=> {
+  async (req, res, next)=> {
     console.log(req.body)
     console.log("ds ", req.files)
     console.log(req.body.dicom)
@@ -169,7 +172,9 @@ studyRouter.post(
         }
       )
       res.json(updated_study)
+      next()
     })
-  }
+  },
+  predictMiddleware
 )
 module.exports = studyRouter

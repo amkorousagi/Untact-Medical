@@ -52,11 +52,16 @@ const DoctorInput = ({ onChange }) => {
   return (
     <>
       <div>
-        <Input placeholder='이메일' onChange={(e) => onChange(e, "이메일")} />
+        <Input
+          type='id'
+          placeholder='이메일'
+          onChange={(e) => onChange(e, "이메일")}
+        />
         <Input placeholder='이름' onChange={(e) => onChange(e, "이름")} />
       </div>
       <div>
         <Input
+          type='password'
           placeholder='비밀번호'
           onChange={(e) => onChange(e, "비밀번호")}
         />
@@ -68,35 +73,7 @@ const DoctorInput = ({ onChange }) => {
 
       <div>
         <Input
-          placeholder='비밀번호 확인'
-          onChange={(e) => onChange(e, "비밀번호 확인")}
-        />
-        <Input placeholder='전공' onChange={(e) => onChange(e, "전공")} />
-      </div>
-    </>
-  )
-}
-
-const RequesterInput = ({ onChange }) => {
-  return (
-    <>
-      <div>
-        <Input placeholder='이메일' onChange={(e) => onChange(e, "이메일")} />
-        <Input placeholder='이름' onChange={(e) => onChange(e, "이름")} />
-      </div>
-      <div>
-        <Input
-          placeholder='비밀번호'
-          onChange={(e) => onChange(e, "비밀번호")}
-        />
-        <Input
-          placeholder='소속 병원'
-          onChange={(e) => onChange(e, "소속 병원")}
-        />
-      </div>
-
-      <div>
-        <Input
+          type='password'
           placeholder='비밀번호 확인'
           onChange={(e) => onChange(e, "비밀번호 확인")}
         />
@@ -119,12 +96,12 @@ function Join(props) {
   //const backJoin
 
   const routeChange = async (e) => {
-    if(password != rePassword){
+    if (password != rePassword) {
       alert("비밀 번호가 일치하지 않습니다")
       return
     }
 
-    let result = "";
+    let result = ""
     try {
       result = await axios.post(
         config.backURL + "/join",
@@ -149,7 +126,7 @@ function Join(props) {
         alert("실패 :" + result.data.err)
       }
     } catch (error) {
-      console.log(error);
+      console.log(error)
       alert("실패 :" + error.response.data.err)
       return
     }
@@ -179,13 +156,8 @@ function Join(props) {
     }
   }
   return (
-    <div>
-      <h1>Untact Medical!</h1>
-      {isDoctor ? (
-        <DoctorInput onChange={onChange} />
-      ) : (
-        <RequesterInput onChange={onChange} />
-      )}
+    <div style={{ textAlign: "center", margin:50}}>
+      <DoctorInput onChange={onChange} />
       <button
         style={{
           backgroundColor: "white",

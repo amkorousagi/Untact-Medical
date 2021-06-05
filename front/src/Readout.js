@@ -46,6 +46,7 @@ const Readout = ({ match, location }) => {
   const history = useHistory()
   const [value, setValue] = useState("정상")
   const [images, setImages] = useState([])
+  const [predicts, setPredicts] = useState([])
   const [index, setIndex] = useState(0)
   const [patientName, setPatientName] = useState("")
   const [patientSex, setPatientSex] = useState("")
@@ -96,12 +97,17 @@ const Readout = ({ match, location }) => {
       setModality(data.Modality)
       setstudyDescription(data.StudyDescription)
       let res = []
+      let res2 = []
       for (let i = 1; i <= data.NumberOfImg; i++) {
         res.push(
           config.backURL + "/show?dirName=" + data.StudyID + "&num=" + i
         )
+        res2.push(
+          config.backURL + "/show?dirName=" + data.StudyID + "&num=" + i + "&mode=predict"
+        )
       }
       setImages(res)
+      setPredicts(res2)
     }
     help()
   }, [])
@@ -169,7 +175,7 @@ const Readout = ({ match, location }) => {
       <hr></hr>
       <Row xl={12} lg={12} md={12} sm={12} xs={12}>
         <Col xl={6} lg={6} md={6} sm={6} xs={6}>
-          <Img src={images[index]} />
+          <Img src={predicts[index]} />
         </Col>
         <Col xl={6} lg={6} md={6} sm={6} xs={6}>
           <CD
