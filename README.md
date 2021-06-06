@@ -9,12 +9,13 @@ host : untactmedi.synology.me
 port: 61903
 
 ## 프로젝트 구조도
-![image](https://user-images.githubusercontent.com/59030198/120925313-0957ff00-c713-11eb-8bd9-a1a4fa0271d2.png)
-![image](https://user-images.githubusercontent.com/59030198/120925324-170d8480-c713-11eb-8db6-c1964f34380c.png)
+![image](https://user-images.githubusercontent.com/59030198/120925456-b894d600-c713-11eb-9b22-5b21b12f6d19.png)
+![image](https://user-images.githubusercontent.com/59030198/120925504-e548ed80-c713-11eb-84e5-96429dfce02e.png)
+
 
 ## 하드웨어
-synology nas(DS220J)
 ![image](https://user-images.githubusercontent.com/59030198/120925343-27bdfa80-c713-11eb-96e3-4480f02ae0ef.png)
+synology nas(DS220J)
 
 ## 프론트앤드 실행화면
 ![image](https://user-images.githubusercontent.com/59030198/120925364-47552300-c713-11eb-83b5-01d46ea73b53.png)
